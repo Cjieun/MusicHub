@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+게시물 읽기 <br/>
+title : [[${music.title}]] artist : [[${music.artist}]]<br/>
+<img th:src="${music.image}" width="200" height="200"/><br />
+
+albumName : [[${music.albumName}]]<br/>
+genre : [[${music.genre}]]<br/>
+releaseDate : [[${music.releaseDate}]]<br/>
+views : [[${music.views}]]<br/>
+
+<br/>
+
+<a th:href="@{/music/delete/{idx}(idx=${music.idx})}">[삭제]</a>
+<a th:href="@{/music/updateform/{idx}(idx=${music.idx})}">[수정]</a>
+
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/music/update" th:object="${music}" >
+    idx <input th:field="*{idx}" readonly> <br/>
+    title <input th:field="*{title}"> <br/>
+    artist <input th:field="*{artist}"><br/>
+    albumName <input th:field="*{albumName}"><br/>
+    genre <input th:field="*{genre}"><br/>
+    releaseDate <input th:field="*{releaseDate}"><br/>
+    views <input th:field="*{views}"><br/>
+    <input type="submit" value="수정"/>
+</form>
+
+
+</body>
+</html>

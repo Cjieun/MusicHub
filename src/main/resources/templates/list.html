@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+노래 모음 <a href="/music/addform">[ADD]</a> <br/>
+<table>
+    <thead>
+    <tr>
+        <th>Index</th>
+        <th>Title</th>
+        <th>Artist</th>
+        <th>Album Art</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="music : ${musics}">
+        <td><span th:text="${music.idx}"></span></td>
+        <td>
+            <a th:href="@{/music/{idx}(idx=${music.idx})}">
+                <span th:text="${music.title}"></span>
+            </a>
+        </td>
+        <td><span th:text="${music.artist}"></span></td>
+        <td>
+            <img th:src="${music.image}" width="50" height="50" alt="Album Art"/>
+        </td>
+        <td class="actions">
+            <a th:href="@{/music/delete/{idx}(idx=${music.idx})}">삭제</a>
+            <a th:href="@{/music/updateform/{idx}(idx=${music.idx})}">수정</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>
