@@ -1,42 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Music Chart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h2 {
+            font-weight: normal;
+            margin-bottom: 40px;
+        }
+
+        .add {
+            margin-bottom: 20px;
+            border: 2px solid #8A8A8A;
+            border-radius: 20px;
+            padding: 5px 10px;
+            width: fit-content;
+            font-size: 14px;
+            color: #333333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        a {
+            text-decoration: none;
+        }
+        th {
+            font-weight: normal;
+            background-color: #f4f4f4;
+            text-align: center;
+            color: #333333;
+            font-size: 15px;
+        }
+
+        th.rank {
+            padding: 12px;
+            text-align: center;
+        }
+        td.rank {
+            text-align: center;
+            width: 5%;
+            padding: 12px;
+        }
+
+        td.image {
+            text-align: right;
+            width: 5%;
+        }
+        td.image img {
+            width: 55px;
+            height: 55px;
+            border-radius: 5px;
+        }
+
+        th.song-info {
+            text-align: left;
+        }
+        td.song-info {
+            width: 25%;
+        }
+        td.song-info > div {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            justify-content: space-between;
+        }
+        .song-title {
+            font-size: 15px;
+        }
+        .artist {
+            color: #757575;
+            font-size: 14px;
+        }
+
+        th.album {
+            text-align: left;
+        }
+        td.album {
+            color: #5D5D5D;
+            font-size: 14px;
+            width: 20%;
+        }
+
+        td.views {
+            width: 15%;
+            color: #757575;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .actions {
+            width: 5%;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
-노래 모음 <a href="/music/addform">[ADD]</a> <br/>
+<h2>노래 모음</h2>
+<div class="add"><a href="/music/addform">➕ 곡 추가</a></div>
+
 <table>
     <thead>
     <tr>
-        <th>Index</th>
-        <th>Title</th>
-        <th>Artist</th>
-        <th>Album Art</th>
-        <th>Actions</th>
+        <th class="rank">순위</th>
+        <th></th>
+        <th class="song-info">곡 정보</th>
+        <th class="album">앨범</th>
+        <th class="views">조회수</th>
+        <th>듣기</th>
+        <th>담기</th>
+        <th>뮤비</th>
+        <th>삭제</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="music : ${musics}">
-        <td><span th:text="${music.idx}"></span></td>
-        <td>
-            <a th:href="@{/music/{idx}(idx=${music.idx})}">
-                <span th:text="${music.title}"></span>
+        <td class="rank"><span th:text="${music.idx}"></span></td>
+        <td class="image"><img th:src="${music.image}" alt="Album Art"/></td>
+        <td class="song-info">
+            <div>
+                <div class="song-title" th:text="${music.title}">Song Title</div>
+                <div class="artist" th:text="${music.artist}">Artist Name</div>
+            </div>
+        </td>
+        <td class="album"><span th:text="${music.albumName}">Album Name</span></td>
+        <td class="views"><span th:text="${music.views}">0</span></td>
+        <td class="actions">
+            <a>
+                ▶️
             </a>
         </td>
-        <td><span th:text="${music.artist}"></span></td>
-        <td>
-            <img th:src="${music.image}" width="50" height="50" alt="Album Art"/>
+        <td class="actions">
+            <a>
+                ➕
+            </a>
         </td>
         <td class="actions">
-            <a th:href="@{/music/delete/{idx}(idx=${music.idx})}">삭제</a>
-            <a th:href="@{/music/updateform/{idx}(idx=${music.idx})}">수정</a>
+            <a >
+                🎬
+            </a>
+        </td>
+        <td class="actions">
+            <a th:href="@{/music/delete/{idx}(idx=${music.idx})}" style="color: red;">
+                🗑️
+            </a>
         </td>
     </tr>
     </tbody>
 </table>
-
 
 </body>
 </html>
