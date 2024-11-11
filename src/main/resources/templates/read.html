@@ -1,26 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>앨범 정보</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 600px;
+        }
+        h2 {
+            font-weight: normal;
+        }
+        p {
+            margin: 0;
+        }
+        .album-info {
+            display: flex;
+            gap: 20px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .album-cover {
+            width: 250px;
+            border-radius: 8px 0 0 8px;
+            border: 1px solid #ddd;
+            object-fit: cover;
+        }
+        .album-details {
+            flex: 1;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .album-title {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        .album-artist {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #4caf50;
+        }
+        td {
+            font-size: 14px;
+        }
+        td:first-child {
+            color: #757575;
+            width: 75px;
+        }
+        td:nth-child(2) {
+            color: #5D5D5D;
+        }
+        .stat-info {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333333;
+        }
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .actions a {
+            padding: 10px 15px;
+            font-size: 12px;
+            border: 1px solid #4caf50;
+            color: #4caf50;
+            text-decoration: none;
+            border-radius: 25px;
+            text-align: center;
+        }
+        .actions a:hover {
+            background-color: #4caf50;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
+<div class="container">
+    <h2>앨범 정보</h2>
+    <div class="album-info">
+        <img th:src="${music.image}" alt="앨범 커버" class="album-cover">
 
-게시물 읽기 <br/>
-title : [[${music.title}]] artist : [[${music.artist}]]<br/>
-<img th:src="${music.image}" width="200" height="200"/><br />
+        <div class="album-details">
+            <div>
+                <p class="album-title">[[${music.title}]]</p>
+                <p class="album-artist">[[${music.artist}]]</p>
+            </div>
+            <table>
+                <tr>
+                    <td>앨범명</td>
+                    <td>[[${music.albumName}]]</td>
+                </tr>
+                <tr>
+                    <td>장르</td>
+                    <td>[[${music.genre}]]</td>
+                </tr>
+                <tr>
+                    <td>발매일</td>
+                    <td>[[${music.releaseDate}]]</td>
+                </tr>
+            </table>
+            <div class="stat-info">
+                👀 [[${music.views}]]
+            </div>
+        </div>
+    </div>
 
-albumName : [[${music.albumName}]]<br/>
-genre : [[${music.genre}]]<br/>
-releaseDate : [[${music.releaseDate}]]<br/>
-views : [[${music.views}]]<br/>
-
-<br/>
-
-<a th:href="@{/music/delete/{idx}(idx=${music.idx})}">[삭제]</a>
-<a th:href="@{/music/updateform/{idx}(idx=${music.idx})}">[수정]</a>
-
+    <div class="actions">
+        <a th:href="@{/music/updateform/{idx}(idx=${music.idx})}">📝 수정</a>
+        <a th:href="@{/music/delete/{idx}(idx=${music.idx})}">🗑️ 삭제</a>
+    </div>
+</div>
 
 </body>
 </html>

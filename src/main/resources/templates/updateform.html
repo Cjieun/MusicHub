@@ -2,21 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>곡 수정</title>
+    <style>
+        h2 {
+            font-weight: normal;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-container {
+            width: 50%;
+            margin: auto;
+            border: 2px solid #8A8A8A;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            color: #333;
+            margin-top: 15px;
+            width: 75%;
+            text-align: left;
+        }
+        input[type="text"], input[type="file"], input[type="date"] {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            width: 75%;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #8A8A8A;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            width: 75%;
+        }
+        input[type="submit"]:hover {
+            background-color: #6b6b6b;
+        }
+    </style>
 </head>
 <body>
+<h2>🎶 곡 수정</h2>
+<div class="form-container">
+    <form action="/music/update" method="post" enctype="multipart/form-data" th:object="${music}">
+        <label for="title">곡 제목</label>
+        <input id="title" th:field="*{title}" type="text" required>
 
-<form action="/music/update" th:object="${music}" >
-    idx <input th:field="*{idx}" readonly> <br/>
-    title <input th:field="*{title}"> <br/>
-    artist <input th:field="*{artist}"><br/>
-    albumName <input th:field="*{albumName}"><br/>
-    genre <input th:field="*{genre}"><br/>
-    releaseDate <input th:field="*{releaseDate}"><br/>
-    views <input th:field="*{views}"><br/>
-    <input type="submit" value="수정"/>
-</form>
+        <label for="artist">아티스트</label>
+        <input id="artist" th:field="*{artist}" type="text" required>
 
+        <label for="albumName">앨범 이름</label>
+        <input id="albumName" th:field="*{albumName}" type="text" required>
 
+        <label for="genre">장르</label>
+        <input id="genre" th:field="*{genre}" type="text" required>
+
+        <label for="releaseDate">발매일</label>
+        <input id="releaseDate" th:field="*{releaseDate}" type="date" required>
+
+        <label for="image">앨범 커버 이미지</label>
+        <input id="image" th:field="*{image}" type="file" accept="image/*">
+
+        <input type="submit" value="수정">
+    </form>
+</div>
 </body>
 </html>

@@ -75,6 +75,7 @@
         }
         .song-title {
             font-size: 15px;
+            color: #000000;
         }
         .artist {
             color: #757575;
@@ -125,12 +126,18 @@
     <tbody>
     <tr th:each="music : ${musics}">
         <td class="rank"><span th:text="${music.idx}"></span></td>
-        <td class="image"><img th:src="${music.image}" alt="Album Art"/></td>
+        <td class="image">
+            <a th:href="@{/music/{idx}(idx=${music.idx})}" style="color: red;">
+                <img th:src="${music.image}" alt="Album Art"/>
+            </a>
+        </td>
         <td class="song-info">
-            <div>
-                <div class="song-title" th:text="${music.title}">Song Title</div>
-                <div class="artist" th:text="${music.artist}">Artist Name</div>
-            </div>
+            <a th:href="@{/music/{idx}(idx=${music.idx})}" style="color: red;">
+                <div>
+                    <div class="song-title" th:text="${music.title}">Song Title</div>
+                    <div class="artist" th:text="${music.artist}">Artist Name</div>
+                </div>
+            </a>
         </td>
         <td class="album"><span th:text="${music.albumName}">Album Name</span></td>
         <td class="views"><span th:text="${music.views}">0</span></td>
