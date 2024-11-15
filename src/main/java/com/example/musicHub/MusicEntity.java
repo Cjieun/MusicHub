@@ -16,11 +16,16 @@ public class MusicEntity {
     private long idx;
     private String title;
     private String artist;
+
     @Column(name = "album_name")
     private String albumName;
+
     private String genre;
+
     @Column(name = "release_date")
     private String releaseDate;
+
     private long views;
+
     private String image;
 }

@@ -7,4 +7,5 @@ public interface MusicService {
     MusicDTO findById(long idx);
     void save(MusicDTO music);
     void deleteById(long idx);
+    List<MusicEntity> search(String query);
 }

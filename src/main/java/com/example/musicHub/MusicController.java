@@ -3,9 +3,7 @@ package com.example.musicHub;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MusicController {
@@ -53,6 +51,16 @@ public class MusicController {
     public String update(@ModelAttribute MusicDTO music)  {
         musicService.save(music);
         return "redirect:/music";
+    }
+
+    @GetMapping("/music/search")
+    public String search(@RequestParam String query, Model model) {
+        if (query != null && !query.isEmpty()) {
+            model.addAttribute("musics", musicService.search(query));
+        } else {
+            model.addAttribute("musics", musicService.findAll());
+        }
+        return "list";
     }
 
 }
