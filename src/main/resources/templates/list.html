@@ -14,28 +14,42 @@
 
         .add {
             margin-bottom: 20px;
-            border: 2px solid #4caf50;
+        }
+
+        .add a {
+            padding: 8px 15px;
+            background-color: #f7f7f7;
+            color: #333;
+            border: 1px solid #d9d9d9;
             border-radius: 20px;
-            padding: 5px 10px;
-            width: fit-content;
             font-size: 14px;
-            color: #4caf50;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .add a:hover {
+            background-color: #e6e6e6;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
         }
 
         .search-container {
-            margin-bottom: 20px;
+            position: relative;
             display: flex;
-            justify-content: center;
             align-items: center;
+            gap: 10px;
         }
 
         .search-container input[type="text"] {
-            width: 300px;
-            padding: 10px;
+            width: 400px;
+            padding: 10px 45px 10px 15px;
             font-size: 14px;
-            border: 1px solid #ccc;
+            border: 1px solid #d9d9d9;
             border-radius: 20px;
-            margin-right: 10px;
             transition: border-color 0.3s ease;
         }
 
@@ -45,18 +59,16 @@
         }
 
         .search-container button {
-            padding: 10px 15px;
-            background-color: #4caf50;
-            color: white;
+            position: absolute;
+            top: 5px;
+            right: 13px;
+            font-size: 18px;
+            background: none;
             border: none;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         .search-container button:hover {
-            background-color: #8bb18d;
+            cursor: pointer;
         }
 
         table {
@@ -138,17 +150,18 @@
         .actions {
             width: 5%;
             text-align: center;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-
-<h2>노래 모음</h2>
+<div class="search-bar">
+    <form class="search-container" action="/music/search" method="get">
+        <input type="text" name="query" placeholder="원하는 음악을 검색해보세요!" />
+        <button type="submit">🔍</button>
+    </form>
+</div>
 <div class="add"><a href="/music/addform">➕ 곡 추가</a></div>
-<form class="search-container" action="/music/search" method="get">
-    <input type="text" name="query" placeholder="Search by name or artist">
-    <button type="submit">Search</button>
-</form>
 <table>
     <thead>
     <tr>
@@ -168,7 +181,7 @@
         <td class="rank"><span th:text="${music.idx}"></span></td>
         <td class="image">
             <a th:href="@{/music/{idx}(idx=${music.idx})}" style="color: red;">
-                <img th:src="@{/img/{image}(image=${music.image})}" alt="Album Art"/>
+                <img th:src="${music.image}" alt="Album Art"/>
             </a>
         </td>
         <td class="song-info">

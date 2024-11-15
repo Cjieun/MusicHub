@@ -94,7 +94,7 @@
 <div class="container">
     <h2>앨범 정보</h2>
     <div class="album-info">
-        <img th:src="@{/img/{image}(image=${music.image})}" alt="Album Art" class="album-cover"/>
+        <img th:src="${music.image}" alt="앨범 커버" class="album-cover">
         <div class="album-details">
             <div>
                 <p class="album-title">[[${music.title}]]</p>
