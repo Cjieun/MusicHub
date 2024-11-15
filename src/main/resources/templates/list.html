@@ -14,12 +14,49 @@
 
         .add {
             margin-bottom: 20px;
-            border: 2px solid #8A8A8A;
+            border: 2px solid #4caf50;
             border-radius: 20px;
             padding: 5px 10px;
             width: fit-content;
             font-size: 14px;
-            color: #333333;
+            color: #4caf50;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-container input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            margin-right: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-container input[type="text"]:focus {
+            border-color: #4caf50;
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-container button:hover {
+            background-color: #8bb18d;
         }
 
         table {
@@ -108,7 +145,10 @@
 
 <h2>노래 모음</h2>
 <div class="add"><a href="/music/addform">➕ 곡 추가</a></div>
-
+<form class="search-container" action="/music/search" method="get">
+    <input type="text" name="query" placeholder="Search by name or artist">
+    <button type="submit">Search</button>
+</form>
 <table>
     <thead>
     <tr>
@@ -128,7 +168,7 @@
         <td class="rank"><span th:text="${music.idx}"></span></td>
         <td class="image">
             <a th:href="@{/music/{idx}(idx=${music.idx})}" style="color: red;">
-                <img th:src="${music.image}" alt="Album Art"/>
+                <img th:src="@{/img/{image}(image=${music.image})}" alt="Album Art"/>
             </a>
         </td>
         <td class="song-info">

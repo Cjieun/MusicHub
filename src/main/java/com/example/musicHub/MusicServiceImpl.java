@@ -27,9 +27,9 @@ public class MusicServiceImpl implements MusicService  {
 
     @Override
     public MusicDTO findById(long idx) {
-    return musicRepository.findById(idx)
-    .map(v ->  Utils.toDTO(v))
-    .orElse(null);
+        return musicRepository.findById(idx)
+                .map(v ->  Utils.toDTO(v))
+                .orElse(null);
     }
 
     @Override
@@ -41,5 +41,13 @@ public class MusicServiceImpl implements MusicService  {
     @Override
     public void deleteById(long idx) {
         musicRepository.deleteById(idx);
+    }
+
+    @Override
+    public List<MusicEntity> search(String query) {
+        return musicRepository.findAll().stream()
+                .filter(music -> music.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                        music.getArtist().toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
     }
 }
