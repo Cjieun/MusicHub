@@ -1,0 +1,29 @@
+<body>
+<div>
+  <a href="/playlist/addform">➕ 새 플레이리스트</a>
+</div>
+<table>
+  <thead>
+  <tr>
+    <th>플레이리스트 이름</th>
+    <th>설명</th>
+    <th>곡 개수</th>
+    <th>보기</th>
+    <th>삭제</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="playlist : ${playlists}">
+    <td th:text="${playlist.name}">Playlist Name</td>
+    <td th:text="${playlist.description}">Description</td>
+    <td th:text="${#lists.size(playlist.musics)}">0</td>
+    <td><a th:href="@{/playlist/{id}(id=${playlist.id})}">보기</a></td>
+    <td>
+      <form th:action="@{/playlist/delete/{id}(id=${playlist.id})}" method="post">
+        <button type="submit">삭제</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
