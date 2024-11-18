@@ -63,4 +63,11 @@ public class MusicController {
         return "list";
     }
 
+    @GetMapping("/music/filter")
+    public String filterByGenre(@RequestParam String genre, Model model) {
+        model.addAttribute("musics", musicService.findByGenre(genre)); // 장르별 검색 결과
+        model.addAttribute("selectedGenre", genre); // 선택된 장르 전달 (필요 시 UI에서 활용 가능)
+        return "list";
+    }
+
 }

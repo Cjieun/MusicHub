@@ -71,6 +71,37 @@
             cursor: pointer;
         }
 
+        .genre-filter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0 40px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .genre-tab {
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+            text-align: center;
+            border: 1px solid transparent;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            margin: 0 20px;
+        }
+
+        .genre-tab:hover {
+            color: #4CAF50;
+            border-bottom: 3px solid #4CAF50;
+        }
+
+        .genre-tab.active {
+            color: #4CAF50;
+            font-weight: bold;
+            border-bottom: 3px solid #4CAF50;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -91,6 +122,7 @@
         }
 
         th.rank {
+            width: 5%;
             padding: 12px;
             text-align: center;
         }
@@ -100,6 +132,9 @@
             padding: 12px;
         }
 
+        th.image {
+            width: 5%;
+        }
         td.image {
             text-align: right;
             width: 5%;
@@ -111,6 +146,7 @@
         }
 
         th.song-info {
+            width: 25%;
             text-align: left;
         }
         td.song-info {
@@ -132,6 +168,7 @@
         }
 
         th.album {
+            width: 20%;
             text-align: left;
         }
         td.album {
@@ -140,6 +177,9 @@
             width: 20%;
         }
 
+        th.views {
+            width: 15%;
+        }
         td.views {
             width: 15%;
             color: #757575;
@@ -147,7 +187,10 @@
             text-align: center;
         }
 
-        .actions {
+        th.actions {
+            width: 5%;
+        }
+        td.actions {
             width: 5%;
             text-align: center;
             cursor: pointer;
@@ -161,19 +204,32 @@
         <button type="submit">🔍</button>
     </form>
 </div>
+<!-- 장르 필터링 네비게이션 -->
+<div class="genre-filter">
+    <a href="/music" class="genre-tab active">전체</a>
+    <a href="/music/filter?genre=발라드" class="genre-tab">발라드</a>
+    <a href="/music/filter?genre=댄스" class="genre-tab">댄스</a>
+    <a href="/music/filter?genre=랩/힙합" class="genre-tab">랩/힙합</a>
+    <a href="/music/filter?genre=R&B/Soul" class="genre-tab">R&B/Soul</a>
+    <a href="/music/filter?genre=인디음악" class="genre-tab">인디음악</a>
+    <a href="/music/filter?genre=록/메탈" class="genre-tab">록/메탈</a>
+    <a href="/music/filter?genre=트로트" class="genre-tab">트로트</a>
+    <a href="/music/filter?genre=포크/블루스" class="genre-tab">포크/블루스</a>
+</div>
+
 <div class="add"><a href="/music/addform">➕ 곡 추가</a></div>
 <table>
     <thead>
     <tr>
         <th class="rank">순위</th>
-        <th></th>
+        <th class="image"></th>
         <th class="song-info">곡 정보</th>
         <th class="album">앨범</th>
         <th class="views">조회수</th>
-        <th>듣기</th>
-        <th>담기</th>
-        <th>뮤비</th>
-        <th>삭제</th>
+        <th class="actions">듣기</th>
+        <th class="actions">담기</th>
+        <th class="actions">뮤비</th>
+        <th class="actions">삭제</th>
     </tr>
     </thead>
     <tbody>
@@ -217,6 +273,23 @@
     </tr>
     </tbody>
 </table>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const genreTabs = document.querySelectorAll(".genre-tab");
+        const currentUrl = new URL(window.location.href);
 
+        genreTabs.forEach((tab) => {
+            // 탭의 href를 절대 URL로 변환
+            const tabUrl = new URL(tab.getAttribute("href"), window.location.origin);
+
+            // 현재 URL과 탭의 URL을 비교
+            if (currentUrl.pathname === tabUrl.pathname && currentUrl.search === tabUrl.search) {
+                tab.classList.add("active");
+            } else {
+                tab.classList.remove("active");
+            }
+        });
+    });
+</script>
 </body>
 </html>
