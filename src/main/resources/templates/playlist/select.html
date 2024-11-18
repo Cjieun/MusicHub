@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>플레이리스트 선택</title>
+</head>
+<body>
+<h1>플레이리스트 선택</h1>
+<p>음악을 추가할 플레이리스트를 선택하세요.</p>
+
+<form th:action="@{/playlist/addMusic}" method="post">
+    <input type="hidden" name="musicId" th:value="${musicId}" /> <!-- 선택한 음악 ID -->
+    <table>
+        <thead>
+        <tr>
+            <th>선택</th>
+            <th>플레이리스트 이름</th>
+            <th>설명</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="playlist : ${playlists}">
+            <td>
+                <input type="checkbox" name="playlistIds" th:value="${playlist.id}" />
+            </td>
+            <td th:text="${playlist.name}">플레이리스트 이름</td>
+            <td th:text="${playlist.description}">설명</td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">추가하기</button>
+</form>
+</body>
+</html>

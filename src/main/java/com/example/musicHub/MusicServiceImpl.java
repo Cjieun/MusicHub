@@ -50,4 +50,11 @@ public class MusicServiceImpl implements MusicService  {
                         music.getArtist().toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<MusicDTO> findByGenre(String genre) {
+        return musicRepository.findByGenre(genre).stream()
+                .map(Utils::toDTO)
+                .collect(Collectors.toList());
+    }
 }
