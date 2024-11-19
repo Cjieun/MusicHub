@@ -95,4 +95,12 @@ public class MusicServiceImpl implements MusicService  {
 
         return musics.stream().map(Utils::toDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public void incrementViews(long idx) {
+        musicRepository.findById(idx).ifPresent(music -> {
+            music.setViews(music.getViews() + 1);
+            musicRepository.save(music);
+        });
+    }
 }
