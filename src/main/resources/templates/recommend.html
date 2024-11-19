@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>추천 음악 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header, footer {
+            padding: 15px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+        h1, h2 {
+            margin: 20px 0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .music-table img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>추천 음악 목록</h1>
+</header>
+
+<div class="container">
+    <h2>당신의 MBTI에 맞춘 음악 추천</h2>
+    <p>MBTI 유형: <span th:text="${mbti}"></span></p>
+
+    <table class="music-table" th:if="${recommendedMusics != null}">
+        <thead>
+        <tr>
+            <th>순위</th>
+            <th>이미지</th>
+            <th>곡 정보</th>
+            <th>앨범</th>
+            <th>조회수</th>
+            <th>듣기</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="music, iterStat : ${recommendedMusics}">
+            <td th:text="${iterStat.count}"></td>
+            <td><img th:src="${music.image}" alt="Album Art" /></td>
+            <td th:text="${music.title}"></td>
+            <td th:text="${music.albumName}"></td>
+            <td th:text="${music.views}"></td>
+            <td><a th:href="@{/music/{idx}(idx=${music.idx})}">▶️</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p th:if="${recommendedMusics == null || recommendedMusics.isEmpty()}">추천된 음악이 없습니다. 다른 MBTI 유형으로 다시 시도해보세요!</p>
+</div>
+
+<footer>
+    <p>&copy; 2024 MBTI 기반 음악 추천 서비스</p>
+</footer>
+</body>
+</html>
