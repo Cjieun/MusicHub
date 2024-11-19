@@ -94,6 +94,7 @@ public class MusicServiceImpl implements MusicService  {
         }
 
         return musics.stream().map(Utils::toDTO).collect(Collectors.toList());
+    }
     public List<MusicDTO> getRecommendationsForMbti(String mbti) {
         List<String> recommendedGenres = getRecommendedGenresForMbti(mbti);
 
