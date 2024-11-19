@@ -94,6 +94,30 @@ public class MusicServiceImpl implements MusicService  {
         }
 
         return musics.stream().map(Utils::toDTO).collect(Collectors.toList());
+    public List<MusicDTO> getRecommendationsForMbti(String mbti) {
+        List<String> recommendedGenres = getRecommendedGenresForMbti(mbti);
+
+        // 필터링하여 추천 음악을 반환
+        return musicRepository.findAll().stream()
+                .filter(music -> recommendedGenres.contains(music.getGenre()))
+                .map(Utils::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> getRecommendedGenresForMbti(String mbti) {
+        switch (mbti) {
+            case "INTJ":
+                return List.of("클래식", "인디음악");
+            case "ENFP":
+                return List.of("팝", "댄스");
+            case "ISFJ":
+                return List.of("발라드", "R&B/Soul");
+            case "ESTP":
+                return List.of("힙합", "록/메탈");
+            // 기타 MBTI 유형에 따른 추천 장르를 추가
+            default:
+                return List.of("팝", "발라드"); // 기본 추천 장르
+        }
     }
 
     @Override

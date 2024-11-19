@@ -11,4 +11,5 @@ public interface MusicService {
     List<MusicDTO> findByGenre(String genre);
     List<MusicDTO> getSortedMusics(String sortBy);
     void incrementViews(long idx);
+    List<MusicDTO> getRecommendationsForMbti(String mbti);
 }
