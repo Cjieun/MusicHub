@@ -76,7 +76,7 @@ public class MusicController {
     // MBTI 질문지 페이지를 로드하는 메서드
     @GetMapping("/music/recommend")
     public String showQuestionnaire() {
-        return "questionnaire"; // questionnaire.html 템플릿을 렌더링
+        return "questionnaire";
     }
 
     // MBTI 추천 처리 메서드
