@@ -34,6 +34,7 @@ public class MusicController {
 
     @RequestMapping("/music/{idx}")
     public String read(@PathVariable long idx, Model model) {
+        musicService.incrementViews(idx);
         model.addAttribute("music", musicService.findById(idx));
         return "read";
     }
