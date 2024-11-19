@@ -12,8 +12,9 @@ public class MusicController {
     MusicService musicService;
 
     @RequestMapping("/music")
-    public String list(Model model) {
-        model.addAttribute("musics", musicService.findAll());
+    public String list(@RequestParam(required = false, defaultValue = "idx") String sortBy, Model model) {
+        model.addAttribute("musics", musicService.getSortedMusics(sortBy));
+        model.addAttribute("currentSort", sortBy);
         return "list";
     }
 

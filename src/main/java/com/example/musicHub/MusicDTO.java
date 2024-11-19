@@ -19,4 +19,5 @@ public class MusicDTO {
     private String releaseDate;
     private long views;
     private String image;
+    private int playlistCount;
 }
