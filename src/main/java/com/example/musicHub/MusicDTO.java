@@ -20,4 +20,5 @@ public class MusicDTO {
     private long views;
     private String image;
     private int playlistCount;
+    private String mp3Path;
 }

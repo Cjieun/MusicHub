@@ -94,6 +94,7 @@ public class MusicServiceImpl implements MusicService  {
         }
 
         return musics.stream().map(Utils::toDTO).collect(Collectors.toList());
+    }
     public List<MusicDTO> getRecommendationsForMbti(String mbti) {
         List<String> recommendedGenres = getRecommendedGenresForMbti(mbti);
 
@@ -117,5 +118,11 @@ public class MusicServiceImpl implements MusicService  {
             default:
                 return List.of("팝", "발라드"); // 기본 추천 장르
         }
+    }
+    @Override
+    public String getAudioPathById(long idx) {
+        return musicRepository.findById(idx)
+                .map(MusicEntity::getMp3Path)
+                .orElse(null);
     }
 }

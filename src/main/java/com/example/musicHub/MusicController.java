@@ -1,10 +1,18 @@
 package com.example.musicHub;
 
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -101,5 +109,25 @@ public class MusicController {
         mbti.append(formData.getOrDefault("q3", "F"));
         mbti.append(formData.getOrDefault("q4", "P"));
         return mbti.toString();
+    }
+
+    @GetMapping("/music/audio/{idx}")
+    @ResponseBody
+    public ResponseEntity<org.springframework.core.io.Resource> getAudioFile(@PathVariable Long idx) {
+        MusicDTO music = musicService.findById(idx);
+        if (music == null || music.getMp3Path() == null || music.getMp3Path().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Path path = Paths.get("src/main/resources/static", music.getMp3Path());
+        if (!Files.exists(path)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        org.springframework.core.io.Resource resource = new FileSystemResource(path);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("audio/mpeg"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + path.getFileName().toString() + "\"")
+                .body(resource);
     }
 }

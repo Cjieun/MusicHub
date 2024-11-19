@@ -11,4 +11,5 @@ public interface MusicService {
     List<MusicDTO> findByGenre(String genre);
     List<MusicDTO> getSortedMusics(String sortBy);
     List<MusicDTO> getRecommendationsForMbti(String mbti);
+    String getAudioPathById(long idx);
 }
