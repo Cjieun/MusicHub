@@ -80,6 +80,7 @@
 <h2>🎶 곡 수정</h2>
 <div class="form-container">
     <form action="/music/update" method="post" enctype="multipart/form-data" th:object="${music}">
+        <input type="hidden" th:field="*{idx}">
         <label for="title">곡 제목</label>
         <input id="title" th:field="*{title}" type="text" required>
 
@@ -105,7 +106,9 @@
         <input id="releaseDate" th:field="*{releaseDate}" type="date" required>
 
         <!--        <label for="image">앨범 커버 이미지</label>-->
-        <!--        <input id="image" th:field="*{image}" type="file" accept="image/*">-->
+        <input id="image" th:field="*{image}" type="hidden" accept="image/*">
+
+        <input type="hidden" th:field="*{views}">
 
         <input type="submit" value="수정">
     </form>

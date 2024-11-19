@@ -13,10 +13,6 @@
         }
 
         .add {
-            margin-bottom: 20px;
-        }
-
-        .add a {
             padding: 8px 15px;
             background-color: #f7f7f7;
             color: #333;
@@ -25,9 +21,10 @@
             font-size: 14px;
             text-decoration: none;
             transition: background-color 0.3s ease;
+            height: fit-content;
         }
 
-        .add a:hover {
+        .add:hover {
             background-color: #e6e6e6;
         }
 
@@ -54,7 +51,7 @@
         }
 
         .search-container input[type="text"]:focus {
-            border-color: #4caf50;
+            border-color: #785DC8;
             outline: none;
         }
 
@@ -75,7 +72,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 30px 0 40px;
+            margin: 30px 0;
             border-bottom: 1px solid #ddd;
         }
 
@@ -92,14 +89,42 @@
         }
 
         .genre-tab:hover {
-            color: #4CAF50;
-            border-bottom: 3px solid #4CAF50;
+            color: #785DC8;
+            border-bottom: 3px solid #785DC8;
         }
 
         .genre-tab.active {
-            color: #4CAF50;
+            color: #785DC8;
             font-weight: bold;
-            border-bottom: 3px solid #4CAF50;
+            border-bottom: 3px solid #785DC8;
+        }
+
+        .music-sort {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+        }
+
+        .sort-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            gap: 10px;
+        }
+
+        .sort-bar select {
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        select:focus {
+            border: 1px solid #785DC8;
+            outline: none;
         }
 
         table {
@@ -205,19 +230,31 @@
     </form>
 </div>
 <!-- 장르 필터링 네비게이션 -->
-<div class="genre-filter">
-    <a href="/music" class="genre-tab active">전체</a>
-    <a href="/music/filter?genre=발라드" class="genre-tab">발라드</a>
-    <a href="/music/filter?genre=댄스" class="genre-tab">댄스</a>
-    <a href="/music/filter?genre=랩/힙합" class="genre-tab">랩/힙합</a>
-    <a href="/music/filter?genre=R%26B/Soul" class="genre-tab">R&B/Soul</a>
-    <a href="/music/filter?genre=인디음악" class="genre-tab">인디음악</a>
-    <a href="/music/filter?genre=록/메탈" class="genre-tab">록/메탈</a>
-    <a href="/music/filter?genre=트로트" class="genre-tab">트로트</a>
-    <a href="/music/filter?genre=포크/블루스" class="genre-tab">포크/블루스</a>
-</div>
+    <div class="genre-filter">
+        <a href="/music" class="genre-tab active">전체</a>
+        <a href="/music/filter?genre=발라드" class="genre-tab">발라드</a>
+        <a href="/music/filter?genre=댄스" class="genre-tab">댄스</a>
+        <a href="/music/filter?genre=랩/힙합" class="genre-tab">랩/힙합</a>
+        <a href="/music/filter?genre=R%26B/Soul" class="genre-tab">R&B/Soul</a>
+        <a href="/music/filter?genre=인디음악" class="genre-tab">인디음악</a>
+        <a href="/music/filter?genre=록/메탈" class="genre-tab">록/메탈</a>
+        <a href="/music/filter?genre=트로트" class="genre-tab">트로트</a>
+        <a href="/music/filter?genre=포크/블루스" class="genre-tab">포크/블루스</a>
+    </div>
 
-<div class="add"><a href="/music/addform">➕ 곡 추가</a></div>
+<div class="music-sort">
+    <a href="/music/addform" class="add">➕ 곡 추가</a>
+    <div class="sort-bar">
+        <form action="/music" method="get" id="sortForm">
+            <select name="sortBy" id="sort" onchange="document.getElementById('sortForm').submit()">
+                <option value="idx" th:selected="${currentSort == 'idx'}">추가된 순</option>
+                <option value="releaseDate" th:selected="${currentSort == 'releaseDate'}">최신순</option>
+                <option value="releaseDateAsc" th:selected="${currentSort == 'releaseDateAsc'}">오래된 순</option>
+                <option value="views" th:selected="${currentSort == 'views'}">조회수 순</option>
+                <option value="playlistCount" th:selected="${currentSort == 'playlistCount'}">많이 담긴 순</option>
+            </select>
+        </form>
+    </div>
 <table>
     <thead>
     <tr>
@@ -233,8 +270,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="music : ${musics}">
-        <td class="rank"><span th:text="${music.idx}"></span></td>
+    <tr th:each="music, iterStat : ${musics}">
+        <td class="rank"><span th:text="${iterStat.index + 1}"></span></td>
         <td class="image">
             <a th:href="@{/music/{idx}(idx=${music.idx})}" style="color: red;">
                 <img th:src="${music.image}" alt="Album Art"/>

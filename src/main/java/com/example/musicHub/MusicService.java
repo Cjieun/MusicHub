@@ -8,8 +8,7 @@ public interface MusicService {
     void save(MusicDTO music);
     void deleteById(long idx);
     List<MusicEntity> search(String query);
-
     List<MusicDTO> findByGenre(String genre);
-
+    List<MusicDTO> getSortedMusics(String sortBy);
     List<MusicDTO> getRecommendationsForMbti(String mbti);
 }
