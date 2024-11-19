@@ -114,7 +114,6 @@ public class MusicServiceImpl implements MusicService  {
                 return List.of("발라드", "R&B/Soul");
             case "ESTP":
                 return List.of("힙합", "록/메탈");
-            // 기타 MBTI 유형에 따른 추천 장르를 추가
             default:
                 return List.of("팝", "발라드"); // 기본 추천 장르
         }
