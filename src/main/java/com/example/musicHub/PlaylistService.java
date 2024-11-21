@@ -1,6 +1,7 @@
 package com.example.musicHub;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PlaylistService {
     List<PlaylistDTO> findAllByUserId(long userId);
@@ -8,3 +9,5 @@ public interface PlaylistService {
     void save(PlaylistDTO playlistDTO, long userId);
     void addMusicToPlaylist(long playlistId, long musicId);
 }
+
+

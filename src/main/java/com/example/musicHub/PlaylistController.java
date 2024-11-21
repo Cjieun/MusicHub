@@ -20,7 +20,9 @@ public class PlaylistController {
 
     @GetMapping
     public String list(Model model) {
-        model.addAttribute("playlists", playlistService.findAllByUserId(currentUserId));
+        List<PlaylistDTO> playlists = playlistService.findAllByUserId(currentUserId);
+        model.addAttribute("playlists", playlists);
+        model.addAttribute("playlistCount", playlists.size());
         return "playlist/list";
     }
 
