@@ -18,7 +18,40 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public List<PlaylistDTO> findAllByUserId(long userId) {
         return playlistRepository.findAllByUserId(userId).stream()
-                .map(Utils::toDTO)
+                .map(playlist -> {
+                    PlaylistDTO dto = Utils.toDTO(playlist);
+
+                    // 음악 리스트 가져오기
+                    List<MusicEntity> musicEntities = playlist.getMusics();
+
+                    // 장르 최대 2개 추출
+                    String genres = musicEntities.stream()
+                            .map(MusicEntity::getGenre)
+                            .distinct()
+                            .limit(2) // 최대 2개
+                            .collect(Collectors.joining(", "));
+                    dto.setGenres(genres);
+
+                    // 수록곡 수
+                    dto.setSongCount(musicEntities.size());
+
+                    // 가장 최근에 추가된 음악 2개 추출
+                    List<MusicDTO> recentSongs = musicEntities.stream()
+                            .sorted((a, b) -> b.getReleaseDate().compareTo(a.getReleaseDate())) // 최신순 정렬
+                            .limit(2) // 최대 2개
+                            .map(Utils::toDTO) // DTO로 변환
+                            .collect(Collectors.toList());
+                    dto.setRecentSongs(recentSongs);
+
+                    // 가장 최근 음악의 이미지 추출
+                    String recentImage = musicEntities.stream()
+                            .max(Comparator.comparing(MusicEntity::getReleaseDate))
+                            .map(MusicEntity::getImage)
+                            .orElse("/img/default-image.jpg"); // 이미지가 없으면 기본 이미지 사용
+                    dto.setRecentImage(recentImage);
+
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 

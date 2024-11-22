@@ -155,19 +155,17 @@
     <td colspan="2">
       <div class="playlistInfo">
         <div class="playlistLeft">
-          <img src="/img/music2.jpg" alt="대표 이미지" class="playlist-image"/>
+          <img th:src="${playlist.recentImage}" alt="대표 이미지" class="playlist-image"/>
           <div>
-            <span class="playlistName">[[${playlist.name}]]</span>
-            <span class="playlistDescription">[[${playlist.description}]]</span>
-            <span class="playlistGenre">장르</span>
+            <span class="playlistName" th:text="${playlist.name}">플레이리스트 이름</span>
+            <span class="playlistDescription" th:text="${playlist.description}">플레이리스트 설명</span>
+            <span class="playlistGenre" th:text="${playlist.genres}">장르</span>
           </div>
         </div>
         <div class="playlistRight">
-          <span class="playlistMusic">수록곡 : 총 15곡</span>
+          <span class="playlistMusic">수록곡 : 총 [[${playlist.songCount}]]곡</span>
           <ul class="playlistRecentMusic">
-            <li>
-              ▶️ 으르렁
-            </li>
+            <li th:each="song : ${playlist.recentSongs}" th:text="'▶️ ' + ${song.title}">최신 곡</li>
           </ul>
         </div>
       </div>
