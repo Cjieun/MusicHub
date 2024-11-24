@@ -37,7 +37,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
                     // 가장 최근에 추가된 음악 2개 추출
                     List<MusicDTO> recentSongs = musicEntities.stream()
-                            .sorted((a, b) -> b.getReleaseDate().compareTo(a.getReleaseDate())) // 최신순 정렬
+                            .sorted(Comparator.comparing(MusicEntity::getReleaseDate)) // 최신순 정렬
                             .limit(2) // 최대 2개
                             .map(Utils::toDTO) // DTO로 변환
                             .collect(Collectors.toList());
@@ -45,7 +45,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
                     // 가장 최근 음악의 이미지 추출
                     String recentImage = musicEntities.stream()
-                            .max(Comparator.comparing(MusicEntity::getReleaseDate))
+                            .max(Comparator.comparing(MusicEntity::getReleaseDate).reversed())
                             .map(MusicEntity::getImage)
                             .orElse("/img/default-image.jpg"); // 이미지가 없으면 기본 이미지 사용
                     dto.setRecentImage(recentImage);

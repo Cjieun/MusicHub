@@ -3,32 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <title>플레이리스트 선택</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px 230px;
+        }
+
+        h2 {
+            font-size: 18px;
+        }
+
+        p {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #333;
+            border: 1px solid #d9d9d9;
+            background: #fafafa;
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        thead th {
+            font-size: 13px;
+            padding: 10px;
+            color: #785DC8;
+            border-bottom: 2px solid #785DC8;
+            text-align: center;
+        }
+
+        tbody tr + tr {
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        td {
+            padding: 10px 10px 10px 15px;
+        }
+
+        .playlistInfo {
+            display: flex;
+        }
+
+        .playlist-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            margin: 0 15px;
+        }
+
+        .playlistInfoBox {
+            display: flex;
+            padding: 8px 140px 8px 0;
+        }
+
+        .playlistInfoBox div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlistName {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+
+        .playlistDescription {
+            font-size: 13px;
+            color: #4c4c4c;
+        }
+
+        .playlistGenre {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .playlistRight {
+            padding: 8px 0;
+        }
+
+        .playlistMusic {
+            color: #1a1a1a;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #785DC8;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        button:hover {
+            background-color: #6a50b1;
+        }
+    </style>
 </head>
 <body>
-<h1>플레이리스트 선택</h1>
-<p>음악을 추가할 플레이리스트를 선택하세요.</p>
+<h2>플레이리스트 선택</h2>
+<p>체크박스를 선택 후 완료버튼을 클릭하시면 플레이리스트 선택이 완료됩니다.</p>
 
 <form th:action="@{/playlist/addMusic}" method="post">
     <input type="hidden" name="musicId" th:value="${musicId}" /> <!-- 선택한 음악 ID -->
     <table>
         <thead>
         <tr>
-            <th>선택</th>
-            <th>플레이리스트 이름</th>
-            <th>설명</th>
+            <th colspan="3">플레이리스트 정보</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="playlist : ${playlists}">
-            <td>
-                <input type="checkbox" name="playlistIds" th:value="${playlist.id}" />
+            <td colspan="3">
+                <div class="playlistInfo">
+                    <input type="checkbox" name="playlistIds" th:value="${playlist.id}" />
+                    <div class="playlistInfoBox">
+                        <img th:src="${playlist.recentImage}" alt="대표 이미지" class="playlist-image" />
+                        <div>
+                            <span class="playlistName" th:text="${playlist.name}">플레이리스트 이름</span>
+                            <span class="playlistDescription" th:text="${playlist.description}">플레이리스트 설명</span>
+                            <span class="playlistGenre" th:text="${playlist.genres}">장르</span>
+                        </div>
+                    </div>
+                    <div class="playlistRight">
+                        <span class="playlistMusic">수록곡 : 총 [[${playlist.songCount}]]곡</span>
+                    </div>
+                </div>
             </td>
-            <td th:text="${playlist.name}">플레이리스트 이름</td>
-            <td th:text="${playlist.description}">설명</td>
         </tr>
         </tbody>
     </table>
-    <button type="submit">추가하기</button>
+    <button type="submit">플레이리스트 선택 완료</button>
 </form>
 </body>
 </html>
