@@ -3,16 +3,15 @@ package com.example.musicHub;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/playlist")
 public class PlaylistController {
+    @Autowired
+    private  MusicService musicService;
     @Autowired
     private PlaylistService playlistService;
 
@@ -39,5 +38,20 @@ public class PlaylistController {
             playlistService.addMusicToPlaylist(playlistId, musicId);
         }
         return "redirect:/playlist"; // 플레이리스트 페이지로 이동
+    }
+
+    @GetMapping("/addform")
+    public String addForm(Model model) {
+        List<MusicDTO> musics = musicService.findAll();
+        model.addAttribute("musics", musics);
+        return "playlist/addform";
+    }
+
+    @PostMapping("/add")
+    public String addPlaylist(@ModelAttribute PlaylistDTO playlistDTO,
+                              @RequestParam(required = false) List<Long> musicIds) {
+
+        playlistService.save(playlistDTO, currentUserId, musicIds);
+        return "redirect:/playlist";
     }
 }

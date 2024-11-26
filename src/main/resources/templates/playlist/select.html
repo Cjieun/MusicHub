@@ -126,12 +126,12 @@
     <table>
         <thead>
         <tr>
-            <th colspan="3">플레이리스트 정보</th>
+            <th colspan="2">플레이리스트 정보</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="playlist : ${playlists}">
-            <td colspan="3">
+            <td>
                 <div class="playlistInfo">
                     <input type="checkbox" name="playlistIds" th:value="${playlist.id}" />
                     <div class="playlistInfoBox">
@@ -142,9 +142,11 @@
                             <span class="playlistGenre" th:text="${playlist.genres}">장르</span>
                         </div>
                     </div>
-                    <div class="playlistRight">
-                        <span class="playlistMusic">수록곡 : 총 [[${playlist.songCount}]]곡</span>
-                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="playlistRight">
+                    <span class="playlistMusic">수록곡 : 총 [[${playlist.songCount}]]곡</span>
                 </div>
             </td>
         </tr>

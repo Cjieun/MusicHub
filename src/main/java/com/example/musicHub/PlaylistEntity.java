@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "playlist")
 @ToString
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor

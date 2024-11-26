@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface MusicRepository extends JpaRepository<MusicEntity, Long> {
     List<MusicEntity> findByGenre(String genre);
+    List<MusicEntity> findAllByIdxIn(List<Long> idxs);
 }

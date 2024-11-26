@@ -63,10 +63,23 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public void save(PlaylistDTO playlistDTO, long userId) {
+    public void save(PlaylistDTO playlistDTO, long userId, List<Long> musicIds) {
+        // 사용자 확인
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+
+        // DTO -> Entity 변환
         PlaylistEntity playlistEntity = Utils.toEntity(playlistDTO, user);
+
+        // 선택된 음악 ID로 음악 조회
+        List<MusicEntity> selectedMusics = (musicIds != null && !musicIds.isEmpty())
+                ? musicRepository.findAllByIdxIn(musicIds) // musicIds를 기준으로 음악 조회
+                : new ArrayList<>(); // musicIds가 없으면 빈 리스트
+
+        // 음악 리스트를 플레이리스트에 설정
+        playlistEntity.setMusics(selectedMusics);
+
+        // 플레이리스트 저장
         playlistRepository.save(playlistEntity);
     }
 

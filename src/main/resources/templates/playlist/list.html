@@ -65,9 +65,6 @@
       padding: 0 24px;
     }
 
-    .playlistInfo {
-      display: flex;
-    }
 
     .playlist-image {
       width: 100px;
@@ -78,7 +75,7 @@
 
     .playlistLeft {
       display: flex;
-      padding: 16px 280px 16px 0;
+      padding: 16px 0;
     }
     .playlistLeft div {
       display: flex;
@@ -100,6 +97,10 @@
       margin-top: 7px;
     }
 
+    .playlistRightBox {
+      display: flex;
+      align-items: flex-start;
+    }
     .playlistRight {
       display: flex;
       flex-direction: column;
@@ -138,7 +139,7 @@
 <body>
 <div class="playlist-top">
   <span class="playlistCount">총 <span>[[${playlistCount}]]</span>개</span>
-  <a href="/playlist/addform" class="add">➕ 플레이리스트 만들기</a>
+  <a href="/playlist/addform" class="add">🎶 플레이리스트 만들기</a>
 </div>
 <table>
   <thead>
@@ -152,8 +153,7 @@
   <tbody>
   <tr th:each="playlist, stat : ${playlists}">
     <td th:text="${stat.count}" class="count"></td>
-    <td colspan="2">
-      <div class="playlistInfo">
+    <td>
         <div class="playlistLeft">
           <img th:src="${playlist.recentImage}" alt="대표 이미지" class="playlist-image"/>
           <div>
@@ -162,12 +162,13 @@
             <span class="playlistGenre" th:text="${playlist.genres}">장르</span>
           </div>
         </div>
-        <div class="playlistRight">
-          <span class="playlistMusic">수록곡 : 총 [[${playlist.songCount}]]곡</span>
-          <ul class="playlistRecentMusic">
-            <li th:each="song : ${playlist.recentSongs}" th:text="'▶️ ' + ${song.title}">최신 곡</li>
-          </ul>
-        </div>
+    </td>
+    <td class="playlistRightBox">
+      <div class="playlistRight">
+        <span class="playlistMusic">수록곡 : 총 [[${playlist.songCount}]]곡</span>
+        <ul class="playlistRecentMusic">
+          <li th:each="song : ${playlist.recentSongs}" th:text="'▶️ ' + ${song.title}">최신 곡</li>
+        </ul>
       </div>
     </td>
     <td class="actions">0</td>
