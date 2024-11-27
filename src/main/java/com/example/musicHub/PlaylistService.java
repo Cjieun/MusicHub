@@ -8,6 +8,7 @@ public interface PlaylistService {
     PlaylistDTO findById(long id);
     void save(PlaylistDTO playlistDTO, long userId, List<Long> musicIds);
     void addMusicToPlaylist(long playlistId, long musicId);
+    void deleteById(long id);
 }
 
 

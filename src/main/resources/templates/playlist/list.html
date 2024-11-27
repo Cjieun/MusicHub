@@ -173,7 +173,8 @@
     </td>
     <td class="actions">0</td>
     <td class="actions">
-      <form th:action="@{/playlist/delete(id=${playlist.id})}" method="post" style="display: inline;">
+      <form th:action="@{/playlist/delete}" method="post" style="display: inline;">
+        <input type="hidden" name="id" th:value="${playlist.id}" />
         <button type="submit" class="action-button">🗑️</button>
       </form>
     </td>

@@ -50,8 +50,13 @@ public class PlaylistController {
     @PostMapping("/add")
     public String addPlaylist(@ModelAttribute PlaylistDTO playlistDTO,
                               @RequestParam(required = false) List<Long> musicIds) {
-
         playlistService.save(playlistDTO, currentUserId, musicIds);
         return "redirect:/playlist";
+    }
+
+    @PostMapping("/delete")
+    public String deletePlaylist(@RequestParam long id) {
+        playlistService.deleteById(id); // 삭제 로직 호출
+        return "redirect:/playlist"; // 삭제 후 플레이리스트 목록으로 리다이렉트
     }
 }

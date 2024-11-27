@@ -93,4 +93,9 @@ public class PlaylistServiceImpl implements PlaylistService {
         playlist.getMusics().add(music); // ManyToMany 관계 업데이트
         playlistRepository.save(playlist);
     }
+
+    @Override
+    public void deleteById(long id) {
+        playlistRepository.deleteById(id);
+    }
 }
