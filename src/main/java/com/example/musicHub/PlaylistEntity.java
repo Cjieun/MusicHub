@@ -38,6 +38,8 @@ public class PlaylistEntity {
     )
     private List<MusicEntity> musics;
 
+    private long views;
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();

@@ -59,4 +59,14 @@ public class PlaylistController {
         playlistService.deleteById(id); // 삭제 로직 호출
         return "redirect:/playlist"; // 삭제 후 플레이리스트 목록으로 리다이렉트
     }
+
+    @GetMapping("/{id}")
+    public String detail(@PathVariable long id, Model model) {
+        PlaylistDTO playlist = playlistService.findById(id);
+        if (playlist == null) {
+            return "redirect:/playlist"; // 존재하지 않는 경우 목록으로 리다이렉트
+        }
+        model.addAttribute("playlist", playlist);
+        return "playlist/read";
+    }
 }

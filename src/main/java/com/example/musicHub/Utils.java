@@ -60,6 +60,7 @@ public class Utils {
                 .createdAt(entity.getCreatedAt().format(formatter))
                 .userId(entity.getUser().getId())
                 .musics(entity.getMusics().stream().map(Utils::toDTO).collect(Collectors.toList()))
+                .views(entity.getViews())
                 .build();
     }
 
@@ -74,6 +75,7 @@ public class Utils {
                                 .map(Utils::toEntity) // MusicDTO -> MusicEntity 변환
                                 .collect(Collectors.toList())
                         : new ArrayList<>())
+                .views(dto.getViews())
                 .build();
     }
 }

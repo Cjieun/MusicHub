@@ -57,9 +57,34 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public PlaylistDTO findById(long id) {
-        return playlistRepository.findById(id)
+        PlaylistEntity playlist = playlistRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid playlist ID"));
+
+        playlist.setViews(playlist.getViews() + 1);
+        playlistRepository.save(playlist);
+
+        PlaylistDTO dto = Utils.toDTO(playlist);
+
+        // 수록된 음악 조회
+        List<MusicEntity> musicEntities = playlist.getMusics();
+        List<MusicDTO> musics = musicEntities.stream()
                 .map(Utils::toDTO)
-                .orElse(null);
+                .collect(Collectors.toList());
+        dto.setMusics(musics);
+
+        String genres = musicEntities.stream()
+                .map(MusicEntity::getGenre)
+                .distinct()
+                .collect(Collectors.joining(" / "));
+        dto.setGenres(genres);
+
+        String recentImage = musicEntities.stream()
+                .max(Comparator.comparing(MusicEntity::getReleaseDate))
+                .map(MusicEntity::getImage)
+                .orElse("/img/default-image.jpg"); // 이미지가 없으면 기본값 사용
+        dto.setRecentImage(recentImage);
+
+        return dto;
     }
 
     @Override
@@ -98,4 +123,6 @@ public class PlaylistServiceImpl implements PlaylistService {
     public void deleteById(long id) {
         playlistRepository.deleteById(id);
     }
+
+
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>플레이리스트 상세보기</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px 230px; }
+        a { text-decoration: none; }
+        .header { margin-bottom: 20px; }
+        .header h1 { font-size: 24px; margin-bottom: 10px; }
+        .header p { font-size: 16px; color: #666; }
+        .recent-image { width: 100px; height: 100px; border-radius: 10px; margin-bottom: 20px; }
+        .genres { margin: 10px 0; font-size: 14px; color: #333; }
+        .song-list { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .song-list th, .song-list td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        .song-list th { color: #785DC8; }
+        .action-button { border: none; cursor: pointer; background: none; color: #ff4d4f; }
+        .action-button:hover { color: #d9363e; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <img th:src="${playlist.recentImage}" alt="대표 이미지" class="recent-image">
+    <h1 th:text="${playlist.name}">플레이리스트 제목</h1>
+    <p th:text="${playlist.description}">플레이리스트 설명</p>
+    <p class="genres">장르: <span th:text="${playlist.genres}">장르 정보</span></p>
+    <p>조회수: <span th:text="${playlist.views}">0</span></p>
+</div>
+
+<table class="song-list">
+    <thead>
+    <tr>
+        <th>NO</th>
+        <th>제목</th>
+        <th>아티스트</th>
+        <th>앨범</th>
+        <th>조회수</th>
+        <th>삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="song, stat : ${playlist.musics}">
+        <td th:text="${stat.count}"></td>
+        <td th:text="${song.title}">노래 제목</td>
+        <td th:text="${song.artist}">아티스트</td>
+        <td th:text="${song.albumName}">앨범</td>
+        <td th:text="${song.views}">조회수</td>
+        <td>
+            <form th:action="@{/playlist/removeMusic}" method="post" style="display: inline;">
+                <input type="hidden" name="playlistId" th:value="${playlist.id}">
+                <input type="hidden" name="musicId" th:value="${song.idx}">
+                <button type="submit" class="action-button">🗑️</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

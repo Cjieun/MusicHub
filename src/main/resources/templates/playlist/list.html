@@ -155,10 +155,16 @@
     <td th:text="${stat.count}" class="count"></td>
     <td>
         <div class="playlistLeft">
-          <img th:src="${playlist.recentImage}" alt="대표 이미지" class="playlist-image"/>
+          <a th:href="@{/playlist/{id}(id=${playlist.id})}">
+            <img th:src="${playlist.recentImage}" alt="대표 이미지" class="playlist-image"/>
+          </a>
           <div>
-            <span class="playlistName" th:text="${playlist.name}">플레이리스트 이름</span>
-            <span class="playlistDescription" th:text="${playlist.description}">플레이리스트 설명</span>
+            <a th:href="@{/playlist/{id}(id=${playlist.id})}">
+              <span class="playlistName" th:text="${playlist.name}">플레이리스트 이름</span>
+            </a>
+            <a th:href="@{/playlist/{id}(id=${playlist.id})}">
+              <span class="playlistDescription" th:text="${playlist.description}">플레이리스트 설명</span>
+            </a>
             <span class="playlistGenre" th:text="${playlist.genres}">장르</span>
           </div>
         </div>
@@ -171,7 +177,9 @@
         </ul>
       </div>
     </td>
-    <td class="actions">0</td>
+    <td class="actions">
+      <span th:text="${playlist.views}">조회수</span>
+    </td>
     <td class="actions">
       <form th:action="@{/playlist/delete}" method="post" style="display: inline;">
         <input type="hidden" name="id" th:value="${playlist.id}" />
