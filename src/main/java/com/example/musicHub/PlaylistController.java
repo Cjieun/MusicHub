@@ -63,6 +63,7 @@ public class PlaylistController {
     @GetMapping("/{id}")
     public String detail(@PathVariable long id, Model model) {
         PlaylistDTO playlist = playlistService.findById(id);
+        model.addAttribute("playlistCount", playlist.getMusics().size());
         if (playlist == null) {
             return "redirect:/playlist"; // 존재하지 않는 경우 목록으로 리다이렉트
         }
