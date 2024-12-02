@@ -227,6 +227,13 @@
             text-align: center;
             cursor: pointer;
         }
+        #audioPlayer {
+            width: 100%;
+            margin-top: 20px;
+            background-color: #f7f7f7;
+            border: 1px solid #785DC8;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -253,7 +260,6 @@
             <a href="/playlist" class="genre-tab">내 플레이리스트</a>
         </div>
     </div>
-
 <div class="music-sort">
     <a href="/music/addform" class="add">➕ 곡 추가</a>
     <div class="sort-bar">
@@ -301,7 +307,7 @@
         <td class="album"><span th:text="${music.albumName}">Album Name</span></td>
         <td class="views"><span th:text="${music.views}">0</span></td>
         <td class="actions">
-            <a>
+            <a href="javascript:void(0);" th:onclick="'playAudio(\'/music/audio/' + ${music.idx} + '\')'">
                 ▶️
             </a>
         </td>
@@ -323,16 +329,14 @@
     </tr>
     </tbody>
 </table>
+<audio id="audioPlayer" controls style="display: none;"></audio>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const genreTabs = document.querySelectorAll(".genre-tab");
         const currentUrl = new URL(window.location.href);
 
         genreTabs.forEach((tab) => {
-            // 탭의 href를 절대 URL로 변환
             const tabUrl = new URL(tab.getAttribute("href"), window.location.origin);
-
-            // 현재 URL과 탭의 URL을 비교
             if (currentUrl.pathname === tabUrl.pathname && currentUrl.search === tabUrl.search) {
                 tab.classList.add("active");
             } else {
@@ -340,6 +344,15 @@
             }
         });
     });
+    function playAudio(audioUrl) {
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer.src !== window.location.origin + audioUrl) {
+            audioPlayer.src = audioUrl;
+            audioPlayer.load();
+        }
+        audioPlayer.style.display = 'block';
+        audioPlayer.play();
+    }
 </script>
 </body>
 </html>

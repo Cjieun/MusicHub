@@ -119,7 +119,11 @@ public class MusicServiceImpl implements MusicService  {
                 return List.of("팝", "발라드"); // 기본 추천 장르
         }
     }
-
+    @Override
+    public String getAudioPathById(long idx) {
+        return musicRepository.findById(idx)
+                .map(MusicEntity::getMp3Path)
+                .orElse(null);
     @Override
     public void incrementViews(long idx) {
         musicRepository.findById(idx).ifPresent(music -> {

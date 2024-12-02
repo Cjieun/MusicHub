@@ -15,6 +15,7 @@ public class Utils {
                 .releaseDate(entity.getReleaseDate())
                 .views(entity.getViews())
                 .image(entity.getImage())
+                .mp3Path(entity.getMp3Path())
                 .build();
     }
     public static MusicEntity toEntity(MusicDTO dto) {
@@ -27,6 +28,7 @@ public class Utils {
                 .releaseDate(dto.getReleaseDate())
                 .views(dto.getViews())
                 .image(dto.getImage())
+                .mp3Path(dto.getMp3Path())
                 .build();
     }
 
