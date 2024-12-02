@@ -1,29 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>플레이리스트</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 24px 230px;
+    }
+    a {
+      text-decoration: none;
+    }
+
+    .playlist-top {
+      margin-bottom: 20px;
+    }
+
+    .playlistCount {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .playlistCount span {
+      color: #785DC8;
+    }
+
+    .add {
+      padding: 8px 15px;
+      background-color: #f7f7f7;
+      color: #333;
+      border: 1px solid #d9d9d9;
+      border-radius: 5px;
+      font-size: 13px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      height: fit-content;
+      margin: 0 0 0 20px;
+    }
+    .add:hover {
+      background-color: #e6e6e6;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    thead th {
+      font-size: 13px;
+      padding: 10px;
+      color: #785DC8;
+      border-bottom: 2px solid #785DC8;
+    }
+    tbody tr + tr {
+      border-bottom: 1px solid #e6e6e6;
+    }
+
+    td.count {
+      font-size: 26px;
+      color: #939897;
+      font-weight: bold;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+
+    .playlist-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 5px;
+      margin-right: 20px;
+    }
+
+    .playlistLeft {
+      display: flex;
+      padding: 16px 0;
+    }
+    .playlistLeft div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .playlistName {
+      font-size: 14px;
+      color: #1a1a1a;
+      font-weight: bold;
+    }
+    .playlistDescription {
+      font-size: 14px;
+      color: #4c4c4c;
+    }
+    .playlistGenre {
+      font-size: 13px;
+      color: #666666;
+      margin-top: 7px;
+    }
+
+    .playlistRightBox {
+      display: flex;
+      align-items: flex-start;
+    }
+    .playlistRight {
+      display: flex;
+      flex-direction: column;
+      padding: 16px 0;
+    }
+
+    .playlistMusic {
+      color: #1a1a1a;
+      font-size: 14px;
+    }
+    .playlistRecentMusic {
+      list-style: none;
+      margin-top: 5px;
+      padding: 0;
+      color: #1a1a1a;
+      font-size: 14px;
+      font-weight: lighter;
+    }
+    .playlistRecentMusic li+li {
+      margin-top: 4px;
+    }
+
+    .actions {
+      text-align: center;
+      color: #666666;
+      font-size: 14px;
+    }
+
+    .action-button {
+      border: none;
+      cursor: pointer;
+      background: none;
+    }
+  </style>
+</head>
 <body>
-<div>
-  <a href="/playlist/addform">➕ 새 플레이리스트</a>
+<div class="playlist-top">
+  <span class="playlistCount">총 <span>[[${playlistCount}]]</span>개</span>
+  <a href="/playlist/addform" class="add">🎶 플레이리스트 만들기</a>
 </div>
 <table>
   <thead>
   <tr>
-    <th>플레이리스트 이름</th>
-    <th>설명</th>
-    <th>곡 개수</th>
-    <th>보기</th>
+    <th>NO</th>
+    <th colspan="2">플레이리스트</th>
+    <th>조회수</th>
     <th>삭제</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="playlist : ${playlists}">
-    <td th:text="${playlist.name}">Playlist Name</td>
-    <td th:text="${playlist.description}">Description</td>
-    <td th:text="${#lists.size(playlist.musics)}">0</td>
-    <td><a th:href="@{/playlist/{id}(id=${playlist.id})}">보기</a></td>
+  <tr th:each="playlist, stat : ${playlists}">
+    <td th:text="${stat.count}" class="count"></td>
     <td>
-      <form th:action="@{/playlist/delete/{id}(id=${playlist.id})}" method="post">
-        <button type="submit">삭제</button>
+        <div class="playlistLeft">
+          <a th:href="@{/playlist/{id}(id=${playlist.id})}">
+            <img th:src="${playlist.recentImage}" alt="대표 이미지" class="playlist-image"/>
+          </a>
+          <div>
+            <a th:href="@{/playlist/{id}(id=${playlist.id})}">
+              <span class="playlistName" th:text="${playlist.name}">플레이리스트 이름</span>
+            </a>
+            <a th:href="@{/playlist/{id}(id=${playlist.id})}">
+              <span class="playlistDescription" th:text="${playlist.description}">플레이리스트 설명</span>
+            </a>
+            <span class="playlistGenre" th:text="${playlist.genres}">장르</span>
+          </div>
+        </div>
+    </td>
+    <td class="playlistRightBox">
+      <div class="playlistRight">
+        <span class="playlistMusic">수록곡 : 총 [[${playlist.songCount}]]곡</span>
+        <ul class="playlistRecentMusic">
+          <li th:each="song : ${playlist.recentSongs}" th:text="'▶️ ' + ${song.title}">최신 곡</li>
+        </ul>
+      </div>
+    </td>
+    <td class="actions">
+      <span th:text="${playlist.views}">조회수</span>
+    </td>
+    <td class="actions">
+      <form th:action="@{/playlist/delete}" method="post" style="display: inline;">
+        <input type="hidden" name="id" th:value="${playlist.id}" />
+        <button type="submit" class="action-button">🗑️</button>
       </form>
     </td>
   </tr>
   </tbody>
 </table>
 </body>
+</html>

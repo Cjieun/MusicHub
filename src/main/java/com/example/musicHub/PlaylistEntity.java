@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "playlist")
 @ToString
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor
@@ -36,6 +37,8 @@ public class PlaylistEntity {
             inverseJoinColumns = @JoinColumn(name = "music_id")
     )
     private List<MusicEntity> musics;
+
+    private long views;
 
     @PrePersist
     public void prePersist() {

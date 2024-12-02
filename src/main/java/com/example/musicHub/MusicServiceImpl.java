@@ -124,5 +124,11 @@ public class MusicServiceImpl implements MusicService  {
         return musicRepository.findById(idx)
                 .map(MusicEntity::getMp3Path)
                 .orElse(null);
+    @Override
+    public void incrementViews(long idx) {
+        musicRepository.findById(idx).ifPresent(music -> {
+            music.setViews(music.getViews() + 1);
+            musicRepository.save(music);
+        });
     }
 }

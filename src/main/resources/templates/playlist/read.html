@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>플레이리스트 상세보기</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px 230px; }
+        a { text-decoration: none; color: #000; }
+        .header {
+            margin-bottom: 30px;
+            border: 4px solid #e6e6e6;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .header > div {
+            display: flex;
+            gap: 20px;
+        }
+        .header h2 { font-size: 22px; margin-bottom: 10px; color: #1a1a1a; }
+        .description {
+            font-size: 12px;
+            color: #1a1a1a;
+        }
+        .header table td {
+            padding: 5px 10px 5px 0;
+        }
+        .header table td, .header table span {
+            font-size: 12px;
+        }
+        .header table td:first-child {
+            color: #666666;
+        }
+        .header table td:nth-child(2) span {
+            color: #1a1a1a;
+        }
+        .recent-image { width: 170px; height: 170px; border-radius: 10px; }
+        .genres { margin: 10px 0; font-size: 14px; color: #333; }
+        .playlist-info {
+            margin-bottom: 35px;
+        }
+
+        .edit {
+            height: fit-content;
+        }
+
+        .playlist-list h3 {
+            border-left: 4px solid #785DC8;
+            padding: 0 10px;
+        }
+        .playlist-list h3 span {
+            color: #666666;
+        }
+        button {
+            font-size: 12px;
+        }
+        .song-list { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .song-list th {
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #785DC8;
+            font-weight: normal;
+            padding: 5px 10px;
+        }
+        .song-list td { padding: 5px 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        .song-list th { color: #785DC8; font-size: 11px;}
+        td.num {
+            width: 4%;
+            text-align: center;
+            font-size: 14px;
+            color: #666666;
+        }
+        .title {
+            width: 44%;
+        }
+        td.title {
+            font-size: 12px;
+            color: #333333;
+        }
+        td.title span {
+            color: #333333;
+        }
+        .artist {
+            width: 16%;
+        }
+        th.artist {
+            text-align: left;
+        }
+        td.artist {
+            color: #777777;
+            font-size: 12px;
+        }
+        .album {
+            width: 16%;
+        }
+        th.album {
+            text-align: left;
+        }
+        td.album {
+            color: #777777;
+            font-size: 12px;
+        }
+        .views {
+            width: 10%;
+        }
+        th.views {
+            text-align: left;
+        }
+        td.views {
+            color: #666666;
+            font-size: 11px;
+        }
+        td.movie {
+            width: 6%;
+            text-align: center;
+            font-size: 11px;
+        }
+        td.delete {
+            width: 4%;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .delete { border: none; cursor: pointer; background: none; }
+    </style>
+</head>
+<body>
+<h2>플레이리스트 정보</h2>
+
+<div class="header">
+    <div>
+        <img th:src="${playlist.recentImage}" alt="대표 이미지" class="recent-image">
+        <div>
+            <h2 th:text="${playlist.name}">플레이리스트 제목</h2>
+            <p th:text="${playlist.description}" class="description">플레이리스트 설명</p>
+            <table class="playlist-info">
+                <tr>
+                    <td>장르구성</td>
+                    <td><span th:text="${playlist.genres}" class="genres">장르 정보</span></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>조회수</td>
+                    <td>
+                        <span th:text="${playlist.views}">0</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <button class="edit"><a th:href="@{update/{id}(id=${playlist.id})}">📝 수정하기</a></button>
+</div>
+
+<div class="playlist-list">
+    <h3>수록곡 <span th:text="${'(' + playlistCount + ')'}"></span></h3>
+    <hr />
+    <table class="song-list">
+        <thead>
+        <tr>
+            <th class="num">NO</th>
+            <th class="title">곡명</th>
+            <th class="artist">아티스트</th>
+            <th class="album">앨범</th>
+            <th class="views">조회수</th>
+            <th class="movie">뮤비</th>
+            <th class="delete">삭제</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="song, stat : ${playlist.musics}">
+            <td th:text="${stat.count}" class="num"></td>
+            <td class="title">
+                <a th:href="@{/music/{idx}(idx=${song.idx})}">
+                    <span th:text="${'▶️  ' + song.title}" >노래 제목</span>
+                </a>
+            </td>
+            <td th:text="${song.artist}" class="artist">아티스트</td>
+            <td th:text="${song.albumName}" class="album">앨범</td>
+            <td th:text="${song.views}" class="views">조회수</td>
+            <td class="movie">
+                <a th:href="'https://www.youtube.com/results?search_query=' + ${song.artist} + '+' + ${song.title} +'+뮤직비디오'" target="_blank">
+                    🎬
+                </a>
+            </td>
+            <td>
+                <form th:action="@{/playlist/removeMusic}" method="post" style="display: inline;">
+                    <input type="hidden" name="playlistId" th:value="${playlist.id}">
+                    <input type="hidden" name="musicId" th:value="${song.idx}">
+                    <button type="submit" class="delete">🗑️</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
