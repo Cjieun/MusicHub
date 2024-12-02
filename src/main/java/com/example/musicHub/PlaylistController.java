@@ -70,4 +70,33 @@ public class PlaylistController {
         model.addAttribute("playlist", playlist);
         return "playlist/read";
     }
+
+    @PostMapping("/removeMusic")
+    public String removeMusicFromPlaylist(@RequestParam long playlistId, @RequestParam long musicId) {
+        playlistService.removeMusicFromPlaylist(playlistId, musicId);
+        return "redirect:/playlist/" + playlistId;
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateform(@PathVariable long id, Model model) {
+        // 플레이리스트 데이터 가져오기
+        PlaylistDTO playlist = playlistService.findById(id);
+        if (playlist == null) {
+            return "redirect:/playlist"; // 존재하지 않으면 목록으로 리다이렉트
+        }
+
+        // 모든 음악 가져오기 (사용자가 선택 가능하도록)
+        List<MusicDTO> allMusics = musicService.findAll();
+
+        model.addAttribute("playlist", playlist);
+        model.addAttribute("musics", allMusics);
+        return "playlist/updateform"; // 수정 페이지 뷰 이름
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute PlaylistDTO playlistDTO,
+                                 @RequestParam(required = false) List<Long> musicIds) {
+        playlistService.updatePlaylist(playlistDTO, musicIds);
+        return "redirect:/playlist/" + playlistDTO.getId(); // 상세 페이지로 리다이렉트
+    }
 }

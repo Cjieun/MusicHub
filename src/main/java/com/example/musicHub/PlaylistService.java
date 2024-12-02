@@ -9,6 +9,9 @@ public interface PlaylistService {
     void save(PlaylistDTO playlistDTO, long userId, List<Long> musicIds);
     void addMusicToPlaylist(long playlistId, long musicId);
     void deleteById(long id);
+    void removeMusicFromPlaylist(long playlistId, long musicId);
+    void updatePlaylist(PlaylistDTO playlistDTO, List<Long> musicIds);
+
 }
 
 

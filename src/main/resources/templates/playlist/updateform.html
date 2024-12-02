@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>플레이리스트 만들기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px 230px;
+        }
+
+        h2 {
+            margin-bottom: 16px;
+        }
+
+        form {
+            margin: 0 auto;
+        }
+
+        .playlistInfo {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .playlistInfo table {
+            margin: 0;
+        }
+
+        .playlistInfo tr, .playlistInfo td {
+            padding: 0;
+            border: none;
+            text-align: left;
+        }
+
+        .playlistInfo tr:first-child {
+            margin-bottom: 10px;
+        }
+
+        .playlistInfo tr:nth-child(2) td:first-child {
+            display: flex;
+            align-items: flex-start;
+            width: fit-content;
+            padding-left: 10px;
+        }
+
+        .playlistInfo td:first-child {
+            width: 10%;
+        }
+
+        .playlistInfo td:nth-child(2) {
+            padding-right: 20px;
+        }
+
+        .playlistInfo td {
+            padding: 5px;
+        }
+
+        label {
+            font-size: 12px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .playlistMusic {
+            margin-top: 16px;
+            margin-bottom: 50px;
+            border: 1px solid #ddd;
+        }
+
+        .playlistMusic th, .playlistMusic td {
+            border: 0;
+        }
+
+        .playlistMusic th {
+            font-weight: normal;
+            font-size: 12px;
+            color: #1a1a1a;
+        }
+
+        .playlistMusic td {
+            color: #1a1a1a;
+            font-size: 12px;
+        }
+
+        .playlistMusic tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        thead th {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        td, th {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .check {
+            width: 10%;
+        }
+
+        th.title {
+            text-align: center;
+            width: 40%;
+        }
+        td.title {
+            text-align: left;
+        }
+
+        th.artist {
+            width: 30%;
+            text-align: left;
+        }
+        td.artist {
+            text-align: left;
+            color: #777777;
+        }
+
+        th.album {
+            width: 20%;
+            text-align: left;
+        }
+        td.album {
+            text-align: left;
+            color: #777777;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        tbody td:first-child {
+            text-align: center;
+        }
+
+        tbody td {
+            vertical-align: middle;
+        }
+
+        .buttons {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 13px 50px;
+            border: none;
+            border-radius: 30px;
+            background-color: #785DC8;
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #6a50b1;
+        }
+
+        a {
+            padding: 13px 50px;
+            border-radius: 30px;
+            background-color: #ffffff;
+            border: 1px solid #d9d9d9;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            color: #666666;
+        }
+    </style>
+</head>
+<body>
+<h2>플레이리스트 수정하기</h2>
+<hr />
+<h3>정보 입력</h3>
+<form th:action="@{/playlist/update}" method="post">
+    <input type="hidden" th:field="${playlist.id}">
+    <div class="playlistInfo">
+        <table>
+            <tr>
+                <td>
+                    <label for="name">제목</label>
+                </td>
+                <td>
+                    <input type="text" id="name" name="name" th:value="${playlist.name}"  placeholder="제목을 입력해 주세요" required />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="description">소개글</label>
+                </td>
+                <td>
+                    <textarea id="description" name="description" rows="4" placeholder="소개글을 입력해 주세요" th:text="${playlist.description}"></textarea>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" th:field="${playlist.views}">
+    </div>
+
+    <h3>선곡하기</h3>
+    <hr />
+    <table class="playlistMusic">
+        <thead>
+        <tr>
+            <th class="check">선택</th>
+            <th class="title">곡명</th>
+            <th class="artist">아티스트</th>
+            <th class="album">앨범</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="music : ${musics}">
+            <td class="check">
+                <input type="checkbox" name="musicIds" th:value="${music.idx}" th:checked="${playlist.musics.contains(music)}"/>
+            </td>
+            <td th:text="'▶️ ' + ${music.title}" class="title">제목</td>
+            <td th:text="${music.artist}" class="artist">아티스트</td>
+            <td th:text="${music.albumName}" class="artist">앨범</td>
+        </tr>
+        </tbody>
+    </table>
+    <hr />
+    <div class="buttons">
+        <button type="submit">확인</button>
+        <a th:href="@{/playlist/{id}(id=${playlist.id})}">취소</a>
+    </div>
+</form>
+</body>
+</html>

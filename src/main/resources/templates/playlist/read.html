@@ -6,7 +6,7 @@
     <title>플레이리스트 상세보기</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 24px 230px; }
-        a { text-decoration: none; }
+        a { text-decoration: none; color: #000; }
         .header {
             margin-bottom: 30px;
             border: 4px solid #e6e6e6;
@@ -75,6 +75,9 @@
         }
         td.title {
             font-size: 12px;
+            color: #333333;
+        }
+        td.title span {
             color: #333333;
         }
         .artist {
@@ -146,13 +149,12 @@
             </table>
         </div>
     </div>
-    <button class="edit"><a href="">📝 수정하기</a></button>
+    <button class="edit"><a th:href="@{update/{id}(id=${playlist.id})}">📝 수정하기</a></button>
 </div>
 
 <div class="playlist-list">
     <h3>수록곡 <span th:text="${'(' + playlistCount + ')'}"></span></h3>
     <hr />
-    <button>➕ 담기</button>
     <table class="song-list">
         <thead>
         <tr>
@@ -168,7 +170,11 @@
         <tbody>
         <tr th:each="song, stat : ${playlist.musics}">
             <td th:text="${stat.count}" class="num"></td>
-            <td th:text="${'▶️  ' + song.title}" class="title">노래 제목</td>
+            <td class="title">
+                <a th:href="@{/music/{idx}(idx=${song.idx})}">
+                    <span th:text="${'▶️  ' + song.title}" >노래 제목</span>
+                </a>
+            </td>
             <td th:text="${song.artist}" class="artist">아티스트</td>
             <td th:text="${song.albumName}" class="album">앨범</td>
             <td th:text="${song.views}" class="views">조회수</td>

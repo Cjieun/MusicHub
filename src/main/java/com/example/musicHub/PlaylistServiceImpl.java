@@ -66,7 +66,9 @@ public class PlaylistServiceImpl implements PlaylistService {
         PlaylistDTO dto = Utils.toDTO(playlist);
 
         // 수록된 음악 조회
-        List<MusicEntity> musicEntities = playlist.getMusics();
+        List<MusicEntity> musicEntities = playlist.getMusics().stream()
+                .sorted(Comparator.comparing(MusicEntity::getReleaseDate)) // 최신 추가 순 정렬
+                .collect(Collectors.toList());
         List<MusicDTO> musics = musicEntities.stream()
                 .map(Utils::toDTO)
                 .collect(Collectors.toList());
@@ -124,5 +126,39 @@ public class PlaylistServiceImpl implements PlaylistService {
         playlistRepository.deleteById(id);
     }
 
+    @Override
+    public void removeMusicFromPlaylist(long playlistId, long musicId) {
+        // 해당 플레이리스트 조회
+        PlaylistEntity playlist = playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid playlist ID"));
+
+        // 해당 곡 제거
+        playlist.setMusics(
+                playlist.getMusics().stream()
+                        .filter(music -> music.getIdx() != musicId) // musicId가 아닌 것만 남김
+                        .collect(Collectors.toList())
+        );
+
+        // 업데이트된 플레이리스트 저장
+        playlistRepository.save(playlist);
+    }
+
+    @Override
+    public void updatePlaylist(PlaylistDTO playlistDTO, List<Long> musicIds) {
+        PlaylistEntity playlist = playlistRepository.findById(playlistDTO.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid playlist ID"));
+
+        // 제목과 설명 업데이트
+        playlist.setName(playlistDTO.getName());
+        playlist.setDescription(playlistDTO.getDescription());
+
+        // 선택된 음악 업데이트
+        List<MusicEntity> selectedMusics = (musicIds != null && !musicIds.isEmpty())
+                ? musicRepository.findAllById(musicIds)
+                : new ArrayList<>();
+        playlist.setMusics(selectedMusics);
+
+        playlistRepository.save(playlist); // 저장
+    }
 
 }
