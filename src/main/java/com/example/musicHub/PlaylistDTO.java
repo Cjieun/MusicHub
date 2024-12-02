@@ -18,4 +18,10 @@ public class PlaylistDTO {
     private String createdAt;
     private long userId;
     private List<MusicDTO> musics;
+    private long views;
+
+    private String genres; // 최대 2개의 장르를 저장
+    private int songCount; // 총 음악 개수
+    private List<MusicDTO> recentSongs; // 최신 2곡
+    private String recentImage;
 }

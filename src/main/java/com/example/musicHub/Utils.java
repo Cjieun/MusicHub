@@ -1,6 +1,7 @@
 package com.example.musicHub;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -59,6 +60,7 @@ public class Utils {
                 .createdAt(entity.getCreatedAt().format(formatter))
                 .userId(entity.getUser().getId())
                 .musics(entity.getMusics().stream().map(Utils::toDTO).collect(Collectors.toList()))
+                .views(entity.getViews())
                 .build();
     }
 
@@ -68,7 +70,12 @@ public class Utils {
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .user(user)
-                .musics(dto.getMusics().stream().map(Utils::toEntity).collect(Collectors.toList()))
+                .musics(dto.getMusics() != null ?
+                        dto.getMusics().stream()
+                                .map(Utils::toEntity) // MusicDTO -> MusicEntity 변환
+                                .collect(Collectors.toList())
+                        : new ArrayList<>())
+                .views(dto.getViews())
                 .build();
     }
 }
