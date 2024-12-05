@@ -16,6 +16,7 @@ public class Utils {
                 .views(entity.getViews())
                 .image(entity.getImage())
                 .mp3Path(entity.getMp3Path())
+                .likeCount(entity.getLikeCount())
                 .build();
     }
     public static MusicEntity toEntity(MusicDTO dto) {
@@ -29,6 +30,7 @@ public class Utils {
                 .views(dto.getViews())
                 .image(dto.getImage())
                 .mp3Path(dto.getMp3Path())
+                .likeCount(dto.getLikeCount())
                 .build();
     }
 
@@ -78,6 +80,22 @@ public class Utils {
                                 .collect(Collectors.toList())
                         : new ArrayList<>())
                 .views(dto.getViews())
+                .build();
+    }
+
+    public static LikeDTO toDTO(LikeEntity entity) {
+        return LikeDTO.builder()
+                .id(entity.getId())
+                .userId(entity.getUser().getId())
+                .musicId(entity.getMusic().getIdx())
+                .build();
+    }
+
+    public static LikeEntity toEntity(LikeDTO dto, UserEntity user, MusicEntity music) {
+        return LikeEntity.builder()
+                .id(dto.getId())
+                .user(user)
+                .music(music)
                 .build();
     }
 }

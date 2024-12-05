@@ -14,6 +14,8 @@ public class MusicServiceImpl implements MusicService  {
 
     @Autowired
     private MusicRepository musicRepository;
+    @Autowired
+    private LikeService likeService;
 
     @Override
     public List<MusicDTO> findAll() {
@@ -62,6 +64,7 @@ public class MusicServiceImpl implements MusicService  {
     @Override
     public List<MusicDTO> getSortedMusics(String sortBy) {
         List<MusicEntity> musics = musicRepository.findAll();
+        long currentUserId = 1;
 
         switch (sortBy) {
             case "releaseDate":
@@ -75,9 +78,9 @@ public class MusicServiceImpl implements MusicService  {
                         .sorted(Comparator.comparing(MusicEntity::getReleaseDate)) // 오래된 순
                         .collect(Collectors.toList());
                 break;
-            case "views":
+            case "likeCount":
                 musics = musics.stream()
-                        .sorted(Comparator.comparingLong(MusicEntity::getViews).reversed())
+                        .sorted(Comparator.comparingLong(MusicEntity::getLikeCount).reversed())
                         .collect(Collectors.toList());
                 break;
             case "playlistCount":
@@ -93,7 +96,11 @@ public class MusicServiceImpl implements MusicService  {
                 break;
         }
 
-        return musics.stream().map(Utils::toDTO).collect(Collectors.toList());
+        return musics.stream().map(music -> {
+            MusicDTO musicDTO = Utils.toDTO(music);
+            musicDTO.setLiked(likeService.isLiked(currentUserId, music.getIdx()));
+            return musicDTO;
+        }).collect(Collectors.toList());
     }
     public List<MusicDTO> getRecommendationsForMbti(String mbti) {
         List<String> recommendedGenres = getRecommendedGenresForMbti(mbti);
@@ -124,6 +131,8 @@ public class MusicServiceImpl implements MusicService  {
         return musicRepository.findById(idx)
                 .map(MusicEntity::getMp3Path)
                 .orElse(null);
+    }
+
     @Override
     public void incrementViews(long idx) {
         musicRepository.findById(idx).ifPresent(music -> {

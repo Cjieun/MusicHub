@@ -21,6 +21,8 @@ public class MusicController {
 
     @Autowired
     MusicService musicService;
+    @Autowired
+    LikeService likeService;
 
     @RequestMapping("/music")
     public String list(@RequestParam(required = false, defaultValue = "idx") String sortBy, Model model) {
@@ -43,7 +45,11 @@ public class MusicController {
     @RequestMapping("/music/{idx}")
     public String read(@PathVariable long idx, Model model) {
         musicService.incrementViews(idx);
-        model.addAttribute("music", musicService.findById(idx));
+        MusicDTO music = musicService.findById(idx);
+        boolean isLiked = likeService.isLiked(1, idx);
+
+        model.addAttribute("music", music);
+        model.addAttribute("isLiked", isLiked);
         return "read";
     }
 

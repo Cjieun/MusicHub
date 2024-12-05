@@ -24,6 +24,9 @@
         p {
             margin: 0;
         }
+        button {
+            padding: 0;
+        }
         .album-info {
             display: flex;
             gap: 20px;
@@ -115,7 +118,15 @@
                 </tr>
             </table>
             <div class="stat-info">
-                👀 [[${music.views}]]
+                <form th:action="@{/likes/toggle/{musicId}(musicId=${music.idx})}" method="post" style="display: inline;">
+                    <input type="hidden" name="redirectPage" value="read">
+                    <input type="hidden" name="userId" th:value="1">
+                    <button type="submit" style="background: none; border: none; cursor: pointer;">
+                        <span th:text="${isLiked} ? '❤️' : '🤍'">🤍</span>
+                    </button>
+                    <span th:text="${music.likeCount}">0</span>
+                </form>
+                <!--👀 [[${music.views}]]-->
             </div>
         </div>
     </div>
