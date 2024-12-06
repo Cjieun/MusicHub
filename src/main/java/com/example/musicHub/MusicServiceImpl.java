@@ -1,5 +1,6 @@
 package com.example.musicHub;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class MusicServiceImpl implements MusicService  {
     private MusicRepository musicRepository;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private HttpSession session;
 
     @Override
     public List<MusicDTO> findAll() {
@@ -64,7 +67,11 @@ public class MusicServiceImpl implements MusicService  {
     @Override
     public List<MusicDTO> getSortedMusics(String sortBy) {
         List<MusicEntity> musics = musicRepository.findAll();
-        long currentUserId = 1;
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            throw new IllegalStateException("로그인된 사용자가 없습니다.");
+        }
+        long currentUserId = loggedInUser.getId();
 
         switch (sortBy) {
             case "releaseDate":

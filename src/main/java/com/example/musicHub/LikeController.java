@@ -1,5 +1,6 @@
 package com.example.musicHub;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,14 +13,21 @@ import java.util.List;
 public class LikeController {
     @Autowired
     private LikeService likeService;
-    @Autowired
-    private MusicService musicService;
 
-    private final long currentUserId = 1;
+    @Autowired
+    private HttpSession session;
 
     @PostMapping("/toggle/{musicId}")
     public String toggleLike(@PathVariable long musicId, @RequestParam String redirectPage) {
-        likeService.toggleLike(1, musicId);
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login"; // 로그인 필요
+        }
+
+        long userId = loggedInUser.getId();
+
+        likeService.toggleLike(userId, musicId);
 
         if ("list".equals(redirectPage)) {
             return "redirect:/music";

@@ -162,7 +162,7 @@
             <th class="title">곡명</th>
             <th class="artist">아티스트</th>
             <th class="album">앨범</th>
-            <th class="views">조회수</th>
+            <th class="views">좋아요</th>
             <th class="movie">뮤비</th>
             <th class="delete">삭제</th>
         </tr>
@@ -177,7 +177,7 @@
             </td>
             <td th:text="${song.artist}" class="artist">아티스트</td>
             <td th:text="${song.albumName}" class="album">앨범</td>
-            <td th:text="${song.views}" class="views">조회수</td>
+            <td th:text="${song.likeCount}" class="views">좋아요</td>
             <td class="movie">
                 <a th:href="'https://www.youtube.com/results?search_query=' + ${song.artist} + '+' + ${song.title} +'+뮤직비디오'" target="_blank">
                     🎬

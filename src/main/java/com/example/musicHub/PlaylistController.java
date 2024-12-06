@@ -1,5 +1,6 @@
 package com.example.musicHub;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +16,20 @@ public class PlaylistController {
     @Autowired
     private PlaylistService playlistService;
 
-    private final long currentUserId = 1; // 현재 유저 ID 가정
+    @Autowired
+    private HttpSession session;
 
     @GetMapping
     public String list(Model model) {
-        List<PlaylistDTO> playlists = playlistService.findAllByUserId(currentUserId);
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login"; // 로그인 필요
+        }
+
+        long userId = loggedInUser.getId();
+
+        List<PlaylistDTO> playlists = playlistService.findAllByUserId(userId);
         model.addAttribute("playlists", playlists);
         model.addAttribute("playlistCount", playlists.size());
         return "playlist/list";
@@ -27,7 +37,15 @@ public class PlaylistController {
 
     @GetMapping("/select")
     public String selectPlaylist(@RequestParam long musicId, Model model) {
-        model.addAttribute("playlists", playlistService.findAllByUserId(currentUserId)); // 현재 유저의 플레이리스트
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        long userId = loggedInUser.getId();
+
+        model.addAttribute("playlists", playlistService.findAllByUserId(userId));
         model.addAttribute("musicId", musicId); // 선택한 음악 ID 전달
         return "playlist/select";
     }
@@ -50,7 +68,15 @@ public class PlaylistController {
     @PostMapping("/add")
     public String addPlaylist(@ModelAttribute PlaylistDTO playlistDTO,
                               @RequestParam(required = false) List<Long> musicIds) {
-        playlistService.save(playlistDTO, currentUserId, musicIds);
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        long userId = loggedInUser.getId();
+
+        playlistService.save(playlistDTO, userId, musicIds);
         return "redirect:/playlist";
     }
 
@@ -62,11 +88,19 @@ public class PlaylistController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable long id, Model model) {
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
         PlaylistDTO playlist = playlistService.findById(id);
-        model.addAttribute("playlistCount", playlist.getMusics().size());
+
         if (playlist == null) {
             return "redirect:/playlist"; // 존재하지 않는 경우 목록으로 리다이렉트
         }
+
+        model.addAttribute("playlistCount", playlist.getMusics().size());
         model.addAttribute("playlist", playlist);
         return "playlist/read";
     }
@@ -79,6 +113,12 @@ public class PlaylistController {
 
     @GetMapping("/update/{id}")
     public String updateform(@PathVariable long id, Model model) {
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
         // 플레이리스트 데이터 가져오기
         PlaylistDTO playlist = playlistService.findById(id);
         if (playlist == null) {
