@@ -21,4 +21,6 @@ public class MusicDTO {
     private String image;
     private int playlistCount;
     private String mp3Path;
+    private long likeCount;
+    private boolean isLiked;
 }

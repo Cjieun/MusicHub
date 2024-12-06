@@ -31,6 +31,10 @@ public class MusicEntity {
     private String image;
 
     private int playlistCount;
+
     @Column(name = "mp3_path")
     private String mp3Path;
+
+    @Column(name = "like_count")
+    private long likeCount;
 }

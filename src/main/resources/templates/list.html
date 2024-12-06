@@ -268,7 +268,7 @@
                 <option value="idx" th:selected="${currentSort == 'idx'}">추가된 순</option>
                 <option value="releaseDate" th:selected="${currentSort == 'releaseDate'}">최신순</option>
                 <option value="releaseDateAsc" th:selected="${currentSort == 'releaseDateAsc'}">오래된 순</option>
-                <option value="views" th:selected="${currentSort == 'views'}">조회수 순</option>
+                <option value="views" th:selected="${currentSort == 'likeCount'}">좋아요 순</option>
                 <option value="playlistCount" th:selected="${currentSort == 'playlistCount'}">많이 담긴 순</option>
             </select>
         </form>
@@ -281,7 +281,8 @@
         <th class="image"></th>
         <th class="song-info">곡 정보</th>
         <th class="album">앨범</th>
-        <th class="views">조회수</th>
+        <th class="views">좋아요</th>
+        <!--<th class="views">조회수</th>-->
         <th class="actions">듣기</th>
         <th class="actions">담기</th>
         <th class="actions">뮤비</th>
@@ -305,7 +306,17 @@
             </a>
         </td>
         <td class="album"><span th:text="${music.albumName}">Album Name</span></td>
-        <td class="views"><span th:text="${music.views}">0</span></td>
+        <td class="views">
+            <form th:action="@{/likes/toggle/{musicId}(musicId=${music.idx})}" method="post" style="display: inline;">
+                <input type="hidden" name="redirectPage" value="list">
+                <input type="hidden" name="userId" th:value="1">
+                <button type="submit" style="background: none; border: none; cursor: pointer;">
+                    <span th:text="${music.isLiked} ? '❤️' : '🤍'">🤍</span>
+                </button>
+                <span th:text="${music.likeCount}">0</span>
+            </form>
+        </td>
+        <!--<td class="views"><span th:text="${music.views}">0</span></td>-->
         <td class="actions">
             <a href="javascript:void(0);" th:onclick="'playAudio(\'/music/audio/' + ${music.idx} + '\')'">
                 ▶️
