@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @ToString
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor
@@ -34,4 +35,6 @@ public class UserEntity {
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
+    @Column(length = 4)
+    private String mbti;
 }

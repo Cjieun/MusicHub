@@ -10,7 +10,9 @@ public interface MusicService {
     List<MusicEntity> search(String query);
     List<MusicDTO> findByGenre(String genre);
     List<MusicDTO> getSortedMusics(String sortBy);
+    List<MusicDTO> getRecommendedMusicsByMbti(String mbti);
     void incrementViews(long idx);
     List<MusicDTO> getRecommendationsForMbti(String mbti);
     String getAudioPathById(long idx);
+
 }

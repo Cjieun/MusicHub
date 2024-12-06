@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBTI 추천 음악</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #785DC8;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    li strong {
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>MBTI 추천 음악</h1>
+</header>
+<div class="container">
+  <h2>당신의 MBTI와 같은 사람들이 좋아한 음악</h2>
+  <ul>
+    <li th:each="music : ${recommendedMusics}">
+      <strong th:text="${music.title}"></strong> - <span th:text="${music.artist}"></span>
+      (<span th:text="${music.likeCount}"></span> Likes)
+    </li>
+  </ul>
+  <p th:if="${recommendedMusics == null || recommendedMusics.isEmpty()}">추천된 음악이 없습니다.</p>
+</div>
+</body>
+</html>
