@@ -120,7 +120,6 @@
             <div class="stat-info">
                 <form th:action="@{/likes/toggle/{musicId}(musicId=${music.idx})}" method="post" style="display: inline;">
                     <input type="hidden" name="redirectPage" value="read">
-                    <input type="hidden" name="userId" th:value="1">
                     <button type="submit" style="background: none; border: none; cursor: pointer;">
                         <span th:text="${isLiked} ? '❤️' : '🤍'">🤍</span>
                     </button>

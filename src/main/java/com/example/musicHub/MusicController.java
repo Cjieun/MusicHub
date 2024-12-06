@@ -1,6 +1,7 @@
 package com.example.musicHub;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
@@ -23,9 +24,17 @@ public class MusicController {
     MusicService musicService;
     @Autowired
     LikeService likeService;
+    @Autowired
+    private HttpSession session;
 
     @RequestMapping("/music")
     public String list(@RequestParam(required = false, defaultValue = "idx") String sortBy, Model model) {
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("loggedInUser", loggedInUser);
         model.addAttribute("musics", musicService.getSortedMusics(sortBy));
         model.addAttribute("currentSort", sortBy);
         return "list";
@@ -44,9 +53,14 @@ public class MusicController {
 
     @RequestMapping("/music/{idx}")
     public String read(@PathVariable long idx, Model model) {
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
         musicService.incrementViews(idx);
         MusicDTO music = musicService.findById(idx);
-        boolean isLiked = likeService.isLiked(1, idx);
+        boolean isLiked = likeService.isLiked(loggedInUser.getId(), idx);
 
         model.addAttribute("music", music);
         model.addAttribute("isLiked", isLiked);
