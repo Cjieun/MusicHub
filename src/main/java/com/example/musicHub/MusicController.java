@@ -98,7 +98,20 @@ public class MusicController {
 
     @GetMapping("/music/filter")
     public String filterByGenre(@RequestParam String genre, Model model) {
-        model.addAttribute("musics", musicService.findByGenre(genre)); // 장르별 검색 결과
+        List<MusicDTO> musics;
+        if ("전체".equals(genre)) {
+            musics = musicService.findAll(); // 전체 목록 반환
+        } else {
+            musics = musicService.findByGenre(genre); // 장르별 목록 반환
+        }
+
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("loggedInUser", loggedInUser);
+        model.addAttribute("musics", musics); // 장르별 검색 결과
         model.addAttribute("selectedGenre", genre); // 선택된 장르 전달 (필요 시 UI에서 활용 가능)
         return "list";
     }
