@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
         }
-        header, footer {
+        header {
             padding: 15px 20px;
             background-color: #785DC8;
             color: white;
@@ -42,7 +42,19 @@
             height: 50px;
             object-fit: cover;
         }
+        .mbti-form {
+            margin: 20px 0;
+        }
+        .mbti-form input, .mbti-form select, .mbti-form button {
+            padding: 10px;
+            margin-right: 10px;
+        }
     </style>
+    <script>
+        function clearDetectedMbti() {
+            document.getElementById("mbti-detected").value = "";
+        }
+    </script>
 </head>
 <body>
 <header>
@@ -51,8 +63,36 @@
 
 <div class="container">
     <h2>당신의 MBTI에 맞춘 음악 추천</h2>
-    <p>MBTI 유형: <span th:text="${mbti}"></span></p>
 
+    <!-- MBTI 입력/선택 폼 -->
+    <div class="mbti-form">
+        <form action="/save-mbti" method="post">
+            <label for="mbti-detected">검사 결과로 저장:</label>
+            <input type="hidden" id="mbti-detected" name="detectedMbti" th:value="${mbti}" />
+            <p>MBTI 유형: <span id="mbti-value" th:text="${mbti}">결과 없음</span></p>
+            <label for="mbti-select">직접 선택:</label>
+            <select id="mbti-select" name="mbti" onchange="clearDetectedMbti()">
+                <option value="" disabled selected>MBTI 유형 선택</option>
+                <option value="INTJ">INTJ</option>
+                <option value="INTP">INTP</option>
+                <option value="ENTJ">ENTJ</option>
+                <option value="ENTP">ENTP</option>
+                <option value="INFJ">INFJ</option>
+                <option value="INFP">INFP</option>
+                <option value="ENFJ">ENFJ</option>
+                <option value="ENFP">ENFP</option>
+                <option value="ISTJ">ISTJ</option>
+                <option value="ISFJ">ISFJ</option>
+                <option value="ESTJ">ESTJ</option>
+                <option value="ESFJ">ESFJ</option>
+                <option value="ISTP">ISTP</option>
+                <option value="ISFP">ISFP</option>
+                <option value="ESTP">ESTP</option>
+                <option value="ESFP">ESFP</option>
+            </select>
+            <button type="submit">저장</button>
+        </form>
+    </div>
     <table class="music-table" th:if="${recommendedMusics != null}">
         <thead>
         <tr>
@@ -75,12 +115,7 @@
         </tr>
         </tbody>
     </table>
-
     <p th:if="${recommendedMusics == null || recommendedMusics.isEmpty()}">추천된 음악이 없습니다. 다른 MBTI 유형으로 다시 시도해보세요!</p>
 </div>
-
-<footer>
-    <p>&copy; 2024 MBTI 기반 음악 추천 서비스</p>
-</footer>
 </body>
 </html>

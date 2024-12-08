@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/login")
     public String loginPage() {

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
@@ -23,4 +22,19 @@ public class MusicDTO {
     private String mp3Path;
     private long likeCount;
     private boolean isLiked;
+
+    // JPQL 쿼리를 위한 생성자
+    public MusicDTO(long idx, String title, String artist, String albumName, String genre, String releaseDate,
+                    long views, String image, String mp3Path, long likeCount) {
+        this.idx = idx;
+        this.title = title;
+        this.artist = artist;
+        this.albumName = albumName;
+        this.genre = genre;
+        this.releaseDate = releaseDate;
+        this.views = views;
+        this.image = image;
+        this.mp3Path = mp3Path;
+        this.likeCount = likeCount;
+    }
 }

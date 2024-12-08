@@ -11,7 +11,7 @@
       padding: 0;
       line-height: 1.6;
     }
-    header, footer {
+    header {
       padding: 15px 20px;
       background-color: #785DC8;
       color: white;
@@ -77,7 +77,7 @@
       transition: background-color 0.3s ease;
     }
     .submit-btn:hover {
-      background-color: #785DC8;
+      background-color: #5a3e9e;
     }
   </style>
   <script>
@@ -86,23 +86,20 @@
       const questions = document.querySelectorAll(".question-block");
       const submitButton = document.querySelector(".submit-btn");
 
-      // 첫 질문 활성화
       if (questions.length > 0) {
         questions[currentQuestionIndex].classList.add("active");
       }
 
-      // 질문 전환 함수
       function showNextQuestion() {
         questions[currentQuestionIndex].classList.remove("active");
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
           questions[currentQuestionIndex].classList.add("active");
         } else {
-          submitButton.style.display = "block"; // 마지막 질문이면 제출 버튼 표시
+          submitButton.style.display = "block";
         }
       }
 
-      // 모든 라디오 버튼에 이벤트 리스너 추가
       const options = document.querySelectorAll(".question-options input[type='radio']");
       options.forEach(option => {
         option.addEventListener("click", showNextQuestion);
@@ -112,54 +109,49 @@
 </head>
 <body>
 <header>
-  <h1>나의 MBTI에 맞는 음악 장르 추천</h1>
+  <h1>간단한 MBTI 기반 음악 취향 검사</h1>
 </header>
-
 <div class="container">
-  <h2>당신의 노래를 찾아보세요!</h2>
-  <form class="mbti-question-form" action="/music/recommend" method="post">
+  <h2>당신만의 음악 취향을 찾아보세요!</h2>
+  <form class="mbti-question-form" action="/recommend" method="post">
     <div class="question-block active">
-      <label>1. 음악이 친구라면, 신나게 파티를 열며 함께 춤추고 싶나요, 아니면 조용한 밤에 속삭이는 비밀을 나누고 싶나요?</label>
+      <label>1. 혼자만의 시간을 보낼 때, 음악을 들으며:</label>
       <div class="question-options">
         <input type="radio" id="q1-e" name="q1" value="E" required>
-        <label for="q1-e">신나게 파티</label>
+        <label for="q1-e">에너지를 충전하고 싶어요.</label>
         <input type="radio" id="q1-i" name="q1" value="I" required>
-        <label for="q1-i">조용한 밤</label>
+        <label for="q1-i">내면의 평화를 얻고 싶어요.</label>
       </div>
     </div>
     <div class="question-block">
-      <label>2. 음악을 들을 때, 하늘을 나는 상상의 구름을 타고 싶은가요, 아니면 발끝에서부터 차분히 흙을 느끼며 걷고 싶은가요?</label>
+      <label>2. 새로운 음악을 선택할 때:</label>
       <div class="question-options">
         <input type="radio" id="q2-n" name="q2" value="N" required>
-        <label for="q2-n">상상의 구름</label>
+        <label for="q2-n">독특하고 상상력이 가득한 음악을 선호해요.</label>
         <input type="radio" id="q2-s" name="q2" value="S" required>
-        <label for="q2-s">흙을 느끼며 걷기</label>
+        <label for="q2-s">익숙하고 안정적인 스타일이 좋아요.</label>
       </div>
     </div>
     <div class="question-block">
-      <label>3. 노래 가사 속 사랑 이야기로 마음이 따뜻해지나요, 아니면 음악 속 리듬과 비트를 해부하며 새로운 규칙을 발견하는 재미를 더 느끼나요?</label>
+      <label>3. 노래 가사에서 무엇을 중요하게 여기나요?</label>
       <div class="question-options">
         <input type="radio" id="q3-f" name="q3" value="F" required>
-        <label for="q3-f">따뜻한 사랑 이야기</label>
+        <label for="q3-f">감정을 자극하는 메시지</label>
         <input type="radio" id="q3-t" name="q3" value="T" required>
-        <label for="q3-t">리듬과 비트 해부</label>
+        <label for="q3-t">논리적이고 명확한 표현</label>
       </div>
     </div>
     <div class="question-block">
-      <label>4. 당신은 바람이 불어오는 대로 새 노래를 찾아 나서는 탐험가인가요, 아니면 아늑한 집에서 좋아하는 멜로디를 반복하며 쉴 수 있는 안정감을 더 원하나요?</label>
+      <label>4. 음악을 들을 때 어떤 방식을 더 즐기나요?</label>
       <div class="question-options">
         <input type="radio" id="q4-p" name="q4" value="P" required>
-        <label for="q4-p">탐험가</label>
+        <label for="q4-p">다양한 장르를 즉흥적으로 탐험해요.</label>
         <input type="radio" id="q4-j" name="q4" value="J" required>
-        <label for="q4-j">아늑한 안정감</label>
+        <label for="q4-j">정해진 플레이리스트에서 즐겨 들어요.</label>
       </div>
     </div>
     <button type="submit" class="submit-btn">MBTI 결과 확인하기</button>
   </form>
 </div>
-
-<footer>
-  <p>&copy; 2024 MBTI 기반 음악 추천 서비스</p>
-</footer>
 </body>
 </html>
