@@ -134,6 +134,11 @@ public class MusicServiceImpl implements MusicService  {
         }
     }
     @Override
+    public List<MusicDTO> getRecommendedMusicsByMbti(String mbti) {
+        return musicRepository.findTopLikedMusicsByMbti(mbti);
+    }
+
+    @Override
     public String getAudioPathById(long idx) {
         return musicRepository.findById(idx)
                 .map(MusicEntity::getMp3Path)

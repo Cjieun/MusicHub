@@ -41,6 +41,7 @@ public class Utils {
                 .username(entity.getUsername())
                 .email(entity.getEmail())
                 .password(entity.getPassword()) // 비밀번호는 필요에 따라 제거 가능
+                .mbti(entity.getMbti())
                 .createdAt(entity.getCreatedAt().format(formatter))
                 .playlists(entity.getPlaylists().stream().map(Utils::toDTO).toList())
                 .build();
@@ -52,6 +53,7 @@ public class Utils {
                 .username(dto.getUsername())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
+                .mbti(dto.getMbti())
                 .build(); // createdAt은 자동 처리
     }
 

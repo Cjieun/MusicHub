@@ -18,4 +18,5 @@ public class UserDTO {
     private String password;
     private String createdAt;
     private List<PlaylistDTO> playlists;
+    private String mbti;
 }
