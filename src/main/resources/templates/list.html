@@ -232,6 +232,10 @@
             color: #5D5D5D;
             font-size: 14px;
             width: 20%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            word-break: break-all;
         }
 
         th.views {
@@ -302,7 +306,7 @@
                 <option value="idx" th:selected="${currentSort == 'idx'}">추가된 순</option>
                 <option value="releaseDate" th:selected="${currentSort == 'releaseDate'}">최신순</option>
                 <option value="releaseDateAsc" th:selected="${currentSort == 'releaseDateAsc'}">오래된 순</option>
-                <option value="views" th:selected="${currentSort == 'likeCount'}">좋아요 순</option>
+                <option value="likeCount" th:selected="${currentSort == 'likeCount'}">좋아요 순</option>
                 <option value="playlistCount" th:selected="${currentSort == 'playlistCount'}">많이 담긴 순</option>
             </select>
         </form>

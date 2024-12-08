@@ -45,7 +45,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
                     // 가장 최근 음악의 이미지 추출
                     String recentImage = musicEntities.stream()
-                            .max(Comparator.comparing(MusicEntity::getReleaseDate).reversed())
+                            .max(Comparator.comparing(MusicEntity::getReleaseDate))
                             .map(MusicEntity::getImage)
                             .orElse("/img/default-image.jpg"); // 이미지가 없으면 기본 이미지 사용
                     dto.setRecentImage(recentImage);

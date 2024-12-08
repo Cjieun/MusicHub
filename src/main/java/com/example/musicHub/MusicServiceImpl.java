@@ -59,9 +59,18 @@ public class MusicServiceImpl implements MusicService  {
 
     @Override
     public List<MusicDTO> findByGenre(String genre) {
-        return musicRepository.findByGenre(genre).stream()
-                .map(Utils::toDTO)
-                .collect(Collectors.toList());
+        List<MusicEntity> musics = musicRepository.findByGenre(genre);
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            throw new IllegalStateException("로그인된 사용자가 없습니다.");
+        }
+        long currentUserId = loggedInUser.getId();
+
+        return musics.stream().map(music -> {
+            MusicDTO musicDTO = Utils.toDTO(music);
+            musicDTO.setLiked(likeService.isLiked(currentUserId, music.getIdx()));
+            return musicDTO;
+        }).collect(Collectors.toList());
     }
 
     @Override
