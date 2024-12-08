@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class MusicController {
@@ -94,14 +95,46 @@ public class MusicController {
     }
 
     @GetMapping("/music/search")
-    public String search(@RequestParam String query, Model model) {
-        if (query != null && !query.isEmpty()) {
-            model.addAttribute("musics", musicService.search(query));
-        } else {
-            model.addAttribute("musics", musicService.findAll());
+    public String search(@RequestParam(required = false) String query, Model model) {
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
         }
-        return "list";
+
+        if (query == null || query.trim().isEmpty()) {
+            model.addAttribute("error", "검색어를 입력해주세요.");
+            model.addAttribute("musics", List.of()); // 빈 리스트 전달
+            model.addAttribute("loggedInUser", loggedInUser);
+            return "list"; // 동일 화면으로 이동
+        }
+
+        try {
+            List<MusicDTO> musics = musicService.search(query).stream()
+                    .map(entity -> MusicDTO.builder()
+                            .idx(entity.getIdx())
+                            .title(entity.getTitle())
+                            .artist(entity.getArtist())
+                            .albumName(entity.getAlbumName())
+                            .genre(entity.getGenre())
+                            .releaseDate(entity.getReleaseDate())
+                            .views(entity.getViews())
+                            .image(entity.getImage())
+                            .playlistCount(entity.getPlaylistCount())
+                            .mp3Path(entity.getMp3Path())
+                            .likeCount(entity.getLikeCount())
+                            .isLiked(false) // 기본값 설정
+                            .build())
+                    .collect(Collectors.toList());
+
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("musics", musics);
+        } catch (Exception ex) {
+            model.addAttribute("error", "검색 중 문제가 발생했습니다.");
+            model.addAttribute("musics", List.of()); // 빈 리스트 전달
+        }
+        return "list"; // 동일 화면으로 이동
     }
+
 
     @GetMapping("/music/filter")
     public String filterByGenre(@RequestParam String genre, Model model) {
