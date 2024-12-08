@@ -11,8 +11,7 @@
       padding: 0;
     }
     header {
-      background-color: #785DC8;
-      color: white;
+      color: #785DC8;
       text-align: center;
       padding: 20px;
     }
@@ -21,16 +20,28 @@
       max-width: 800px;
       margin: auto;
     }
-    ul {
-      list-style: none;
-      padding: 0;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
     }
-    li {
-      padding: 10px 0;
-      border-bottom: 1px solid #ddd;
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
     }
-    li strong {
-      font-size: 1.2em;
+    th {
+      background-color: #f4f4f4;
+    }
+    img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+    .empty-message {
+      text-align: center;
+      margin-top: 20px;
+      color: #888;
     }
   </style>
 </head>
@@ -40,13 +51,33 @@
 </header>
 <div class="container">
   <h2>당신의 MBTI와 같은 사람들이 좋아한 음악</h2>
-  <ul>
-    <li th:each="music : ${recommendedMusics}">
-      <strong th:text="${music.title}"></strong> - <span th:text="${music.artist}"></span>
-      (<span th:text="${music.likeCount}"></span> Likes)
-    </li>
-  </ul>
-  <p th:if="${recommendedMusics == null || recommendedMusics.isEmpty()}">추천된 음악이 없습니다.</p>
+  <table th:if="${recommendedMusics != null && !recommendedMusics.isEmpty()}">
+    <thead>
+    <tr>
+      <th>순위</th>
+      <th>이미지</th>
+      <th>곡명</th>
+      <th>아티스트</th>
+      <th>앨범</th>
+      <th>좋아요</th>
+      <th>상세정보</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="music, iterStat : ${recommendedMusics}">
+      <td th:text="${iterStat.count}"></td>
+      <td><img th:src="${music.image}" alt="Album Art" /></td>
+      <td th:text="${music.title}"></td>
+      <td th:text="${music.artist}"></td>
+      <td th:text="${music.albumName}"></td>
+      <td th:text="${music.likeCount}"></td>
+      <td><a th:href="@{/music/{idx}(idx=${music.idx})}">▶️</a></td>
+    </tr>
+    </tbody>
+  </table>
+  <p class="empty-message" th:if="${recommendedMusics == null || recommendedMusics.isEmpty()}">
+    현재 같은 MBTI 유형의 추천 음악이 없습니다. 관심 있는 음악을 추가해 보세요!
+  </p>
 </div>
 </body>
 </html>
